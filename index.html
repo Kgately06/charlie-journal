@@ -56,6 +56,11 @@
           <div class="cursorButtons">
             <button type="button" onclick="setCursor('heart')">❤️ Heart</button>
             <button type="button" onclick="setCursor('star')">⭐ Star</button>
+            <button type="button" onclick="setCursor('butterfly')">🦋 Butterfly</button>
+            <button type="button" onclick="setCursor('sparkle')">✨ Sparkles</button>
+            <button type="button" onclick="setCursor('flower')">🌸 Flower</button>
+            <button type="button" onclick="setCursor('crown')">👑 Crown</button>
+            <button type="button" onclick="setCursor('rainbow')">🌈 Rainbow</button>
             <button type="button" onclick="setCursor('mystery')">❓ Mystery</button>
           </div>
         </div>
@@ -142,10 +147,24 @@
 
                 <div class="divider"></div>
 
-                <h2 class="sectionTitle">🖌️ Craft of the Day</h2>
-                <div class="craftOfDayFrame" aria-label="Today’s craft idea">
-                  <img id="craftOfDayImage" class="craftOfDayImage" alt="" />
+                <h2 class="sectionTitle">📷 Picture of the Day</h2>
+                <div class="pictureOfDayRow">
+                  <div class="pictureOfDayFrame" aria-label="Picture of the day">
+                    <img id="pictureOfDayPreview" class="pictureOfDayImage" alt="Picture of the day" />
+                    <div id="pictureOfDayHint" class="pictureOfDayHint">Add a photo for today</div>
+                  </div>
+                  <div class="pictureOfDayControls">
+                    <label class="fileLabel">
+                      <span class="fileLabelText">Add photo</span>
+                      <input id="pictureOfDayInput" class="fileInput" type="file" accept="image/*" />
+                    </label>
+                    <button id="removePictureOfDayBtn" class="secondaryBtn" type="button" disabled>
+                      Remove photo
+                    </button>
+                  </div>
                 </div>
+
+                <div class="divider"></div>
 
                 <h2 class="sectionTitle">🎨 Craft of the Week</h2>
                 <div class="craftRow">
@@ -229,6 +248,7 @@
           </div>
         </section>
       </main>
+      <div class="judySticker" aria-hidden="true" title="Judy">💖 Judy</div>
       <div id="celebrationOverlay" class="celebrationOverlay" aria-hidden="true">
         <div class="celebrationStar">⭐</div>
       </div>

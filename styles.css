@@ -654,26 +654,66 @@ textarea {
   background: rgba(255, 255, 255, 0.85);
 }
 
-.craftOfDayFrame {
-  border-radius: 18px;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.7);
-  border: 2px solid rgba(0, 0, 0, 0.08);
-  margin-bottom: 8px;
+.pictureOfDayRow {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 16px;
+  align-items: stretch;
 }
 
-.craftOfDayImage {
-  display: block;
-  width: 100%;
-  max-height: 220px;
-  object-fit: cover;
+@media (max-width: 720px) {
+  .pictureOfDayRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pictureOfDayFrame {
+  border: 2px dashed rgba(0, 0, 0, 0.18);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.65);
+  display: grid;
+  place-items: center;
+  padding: 14px;
+  min-height: 220px;
+  position: relative;
+  overflow: hidden;
+}
+
+.pictureOfDayImage {
+  display: none;
+  position: absolute;
+  inset: 14px;
+  width: calc(100% - 28px);
+  height: calc(100% - 28px);
+  object-fit: contain;
   object-position: center;
+  border-radius: 14px;
+}
+
+.pictureOfDayFrame.hasImage .pictureOfDayImage {
+  display: block;
+}
+
+.pictureOfDayFrame.hasImage .pictureOfDayHint {
+  display: none;
+}
+
+.pictureOfDayHint {
+  color: var(--muted);
+  text-align: center;
+  font-weight: 700;
+}
+
+.pictureOfDayControls {
+  display: grid;
+  gap: 10px;
+  align-content: start;
 }
 
 .craftRow {
   display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 12px;
+  grid-template-columns: 340px 1fr;
+  gap: 16px;
   align-items: stretch;
 }
 
@@ -690,7 +730,7 @@ textarea {
   display: grid;
   place-items: center;
   padding: 14px;
-  min-height: 160px;
+  min-height: 280px;
   position: relative;
   overflow: hidden;
 }
@@ -701,14 +741,19 @@ textarea {
   width: calc(100% - 28px);
   height: calc(100% - 28px);
   object-fit: contain;
+  object-position: center;
   border-radius: 14px;
 }
 
 .craftImage {
   display: none;
-  width: 100%;
-  height: 100%;
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
   object-fit: contain;
+  object-position: center;
   border-radius: 14px;
 }
 
@@ -720,6 +765,10 @@ textarea {
 
 .craftFrame.hasImage .craftImage {
   display: block;
+  position: absolute;
+  inset: 14px;
+  width: calc(100% - 28px);
+  height: calc(100% - 28px);
 }
 
 .craftFrame.hasImage .craftHint {
@@ -792,6 +841,25 @@ textarea {
 
 .soundBtn.isOff {
   opacity: 0.7;
+}
+
+.judySticker {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 20;
+  pointer-events: none;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #ffb6c1, #ffc0cb);
+  border: 2px solid rgba(255, 182, 193, 0.9);
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  font-family: "Fredoka", ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: #8b4513;
+  transform: rotate(-6deg);
+  white-space: nowrap;
 }
 
 .celebrationOverlay {

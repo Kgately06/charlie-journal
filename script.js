@@ -28,41 +28,6 @@ const NIGHT_AFFIRMATIONS = [
   "I'm going to sleep well and wake up ready.",
 ];
 
-// Fun, bright kid-craft photos (one per day, cycles by day-of-month). Pexels/Unsplash license.
-const CRAFT_OF_DAY_IMAGES = [
-  { url: "https://images.pexels.com/photos/8014345/pexels-photo-8014345.jpeg?auto=compress&cs=tinysrgb&w=400", alt: "Rainbow clay craft" },
-  { url: "https://images.pexels.com/photos/7054789/pexels-photo-7054789.jpeg?auto=compress&cs=tinysrgb&w=400", alt: "Colorful pencils" },
-  { url: "https://images.pexels.com/photos/2078147/pexels-photo-2078147.jpeg?auto=compress&cs=tinysrgb&w=400", alt: "Bright crayons" },
-  { url: "https://images.pexels.com/photos/3755511/pexels-photo-3755511.jpeg?auto=compress&cs=tinysrgb&w=400", alt: "Drawing and creating" },
-  { url: "https://images.pexels.com/photos/159825/pexels-photo-159825.jpeg?auto=compress&cs=tinysrgb&w=400", alt: "Colorful art supplies" },
-  { url: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=400&q=80", alt: "Fun art supplies" },
-  { url: "https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=400&q=80", alt: "Paper craft fun" },
-  { url: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80", alt: "Painting and brushes" },
-  { url: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400&q=80", alt: "Crayons and drawing" },
-  { url: "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=400&q=80", alt: "Colored pencils craft" },
-  { url: "https://images.unsplash.com/photo-1493106540698-239f134ba3d2?w=400&q=80", alt: "Watercolor fun" },
-  { url: "https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=400&q=80", alt: "Paper and scissors craft" },
-  { url: "https://images.pexels.com/photos/8014345/pexels-photo-8014345.jpeg?auto=compress&cs=tinysrgb&w=400", alt: "Rainbow craft idea" },
-  { url: "https://images.pexels.com/photos/7054789/pexels-photo-7054789.jpeg?auto=compress&cs=tinysrgb&w=400", alt: "Creative coloring" },
-  { url: "https://images.pexels.com/photos/2078147/pexels-photo-2078147.jpeg?auto=compress&cs=tinysrgb&w=400", alt: "Craft time" },
-  { url: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=400&q=80", alt: "Exciting craft supplies" },
-  { url: "https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=400&q=80", alt: "Paper craft project" },
-  { url: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80", alt: "Paint and create" },
-  { url: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400&q=80", alt: "Drawing fun" },
-  { url: "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=400&q=80", alt: "Colorful craft" },
-  { url: "https://images.unsplash.com/photo-1493106540698-239f134ba3d2?w=400&q=80", alt: "Art project" },
-  { url: "https://images.pexels.com/photos/8014345/pexels-photo-8014345.jpeg?auto=compress&cs=tinysrgb&w=400", alt: "Rainbow clay fun" },
-  { url: "https://images.pexels.com/photos/3755511/pexels-photo-3755511.jpeg?auto=compress&cs=tinysrgb&w=400", alt: "Making something cool" },
-  { url: "https://images.pexels.com/photos/7054789/pexels-photo-7054789.jpeg?auto=compress&cs=tinysrgb&w=400", alt: "Bright craft idea" },
-  { url: "https://images.pexels.com/photos/2078147/pexels-photo-2078147.jpeg?auto=compress&cs=tinysrgb&w=400", alt: "Fun with crayons" },
-  { url: "https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=400&q=80", alt: "Cut and paste craft" },
-  { url: "https://images.unsplash.com/photo-1515405295579-ba7b45403062?w=400&q=80", alt: "Creative drawing" },
-  { url: "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=400&q=80", alt: "Paint project" },
-  { url: "https://images.unsplash.com/photo-1601564267677-a36d0ec94f10?w=400&q=80", alt: "Kids art project" },
-  { url: "https://images.pexels.com/photos/159825/pexels-photo-159825.jpeg?auto=compress&cs=tinysrgb&w=400", alt: "Colorful art" },
-  { url: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=400&q=80", alt: "Today’s craft idea" },
-];
-
 // Craft of the week: one per Sun–Sat week (new craft every Sunday). Fun, bright kid crafts. Pexels/Unsplash license.
 const CRAFT_OF_THE_WEEK_IMAGES = [
   { url: "https://images.pexels.com/photos/8014345/pexels-photo-8014345.jpeg?auto=compress&cs=tinysrgb&w=400", alt: "This week’s craft: rainbow clay" },
@@ -103,8 +68,11 @@ const els = {
   craftHint: document.getElementById("craftHint"),
   craftImageInput: document.getElementById("craftImageInput"),
   removeCraftImageBtn: document.getElementById("removeCraftImageBtn"),
-  craftOfDayImage: document.getElementById("craftOfDayImage"),
   craftOfWeekImage: document.getElementById("craftOfWeekImage"),
+  pictureOfDayPreview: document.getElementById("pictureOfDayPreview"),
+  pictureOfDayHint: document.getElementById("pictureOfDayHint"),
+  pictureOfDayInput: document.getElementById("pictureOfDayInput"),
+  removePictureOfDayBtn: document.getElementById("removePictureOfDayBtn"),
 
   revealAffirmationBtn: document.getElementById("revealAffirmationBtn"),
   affirmationText: document.getElementById("affirmationText"),
@@ -128,6 +96,7 @@ let viewYear;
 let viewMonthIndex;
 let selectedDate;
 let currentCraftImageDataUrl = "";
+let currentPictureOfDayDataUrl = "";
 let soundOn = true;
 let audioCtx = null;
 let trailType = "star";
@@ -189,6 +158,7 @@ function getEntry(entries, iso) {
         needToDoToday: "",
         craftDescription: "",
         craftImageDataUrl: "",
+        pictureOfDayDataUrl: "",
       },
       night: {
         gratefulFor: "",
@@ -346,6 +316,25 @@ function initSound() {
   setSoundEnabled(enabled);
 }
 
+// Tiny SVG cursors for girly options (24x24, encoded for data URI)
+function getSvgCursor(svgContent) {
+  const encoded = encodeURIComponent(svgContent);
+  return `url("data:image/svg+xml,${encoded}") 0 0, auto`;
+}
+
+const CURSOR_SVG = {
+  butterfly:
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#ff69b4" d="M12 10c-1 0-2 .5-2.5 1.5L8 14h2l1.5-2 1.5 2h2l-1.5-2.5c-.5-1-1.5-1.5-2.5-1.5z"/><path fill="#ffb6c1" d="M8 14c-2 0-3 1.5-3 3v2h3v-2c0-.5.5-1 1-1h1v-2H8z"/><path fill="#ffb6c1" d="M16 14v2h1c.5 0 1 .5 1 1v2h3v-2c0-1.5-1-3-3-3h-2z"/><path fill="#da70d6" d="M12 8c.5 0 1 .2 1.3.6l.7 1.4.7-1.4c.3-.4.8-.6 1.3-.6s1 .2 1.3.6l.7 1.4.7-1.4c.3-.4.8-.6 1.3-.6v2c-.3 0-.5.1-.7.3l-1 2-1-2c-.2-.2-.4-.3-.7-.3s-.5.1-.7.3l-1 2-1-2c-.2-.2-.4-.3-.6-.3V8z"/></svg>',
+  sparkle:
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#ffd700" d="M12 2l1.5 4.5L18 8l-4.5 1.5L12 14l-1.5-4.5L6 8l4.5-1.5L12 2z"/><path fill="#fff59d" d="M4 16l2 6 2-6 6-2-6-2-2-6-2 6-6 2z"/><path fill="#ffeb3b" d="M20 12l1 3 3 1-3 1-1 3-1-3-3-1 3-1 1-3z"/></svg>',
+  flower:
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="#ffb6c1"/><ellipse cx="12" cy="8" rx="3" ry="4" fill="#ff69b4" transform="rotate(0 12 12)"/><ellipse cx="16" cy="12" rx="3" ry="4" fill="#ff69b4" transform="rotate(72 12 12)"/><ellipse cx="14" cy="17" rx="3" ry="4" fill="#ff69b4" transform="rotate(144 12 12)"/><ellipse cx="10" cy="17" rx="3" ry="4" fill="#ff69b4" transform="rotate(216 12 12)"/><ellipse cx="8" cy="12" rx="3" ry="4" fill="#ff69b4" transform="rotate(288 12 12)"/></svg>',
+  crown:
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#ffd700" d="M12 4l2 4 2-1-1 4h2l-3 6-3-6h2l-1-4 2 1 2-4z"/><path fill="#ffec8b" d="M4 14h16v4H4v-4z"/><path fill="#daa520" d="M2 10l3 4h2l2-6 2 6h2l3-4h2v10H2V10z"/></svg>',
+  rainbow:
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#ff6b6b" d="M12 18a6 6 0 0 1-6-6c0-1 .2-2 .6-2.8L12 4l5.4 5.2c.4.8.6 1.8.6 2.8a6 6 0 0 1-6 6z" opacity=".9"/><path fill="#ffd93d" d="M12 16a4 4 0 0 1-4-4c0-.6.1-1.2.4-1.7L12 8l3.6 2.3c.3.5.4 1.1.4 1.7a4 4 0 0 1-4 4z" opacity=".9"/><path fill="#6bcb77" d="M12 14a2 2 0 0 1-2-2c0-.2 0-.4.1-.6L12 11l1.9.4c.1.2.1.4.1.6a2 2 0 0 1-2 2z" opacity=".9"/></svg>',
+};
+
 function setCursor(type) {
   let cursorPath = "";
 
@@ -355,13 +344,29 @@ function setCursor(type) {
   } else if (type === "star") {
     cursorPath = "url('cursors/star.png'), auto";
     trailType = "star";
+  } else if (type === "butterfly") {
+    cursorPath = getSvgCursor(CURSOR_SVG.butterfly);
+    trailType = "butterfly";
+  } else if (type === "sparkle") {
+    cursorPath = getSvgCursor(CURSOR_SVG.sparkle);
+    trailType = "sparkle";
+  } else if (type === "flower") {
+    cursorPath = getSvgCursor(CURSOR_SVG.flower);
+    trailType = "flower";
+  } else if (type === "crown") {
+    cursorPath = getSvgCursor(CURSOR_SVG.crown);
+    trailType = "crown";
+  } else if (type === "rainbow") {
+    cursorPath = getSvgCursor(CURSOR_SVG.rainbow);
+    trailType = "rainbow";
   } else if (type === "mystery") {
-    const options = ["heart", "star"];
+    const options = ["heart", "star", "butterfly", "sparkle", "flower", "crown", "rainbow"];
     const random = options[Math.floor(Math.random() * options.length)];
-    cursorPath = `url('cursors/${random}.png'), auto`;
-    trailType = random;
+    setCursor(random);
+    return;
   } else {
     cursorPath = "auto";
+    trailType = "star";
   }
 
   document.body.style.cursor = cursorPath;
@@ -442,7 +447,23 @@ document.addEventListener("mousemove", (e) => {
     lastTrailTime = now;
     const trail = document.createElement("div");
     trail.className = "trail";
-    trail.textContent = trailType === "heart" ? "❤️" : "⭐";
+    const trailEmoji =
+      trailType === "heart"
+        ? "❤️"
+        : trailType === "star"
+          ? "⭐"
+          : trailType === "butterfly"
+            ? "🦋"
+            : trailType === "sparkle"
+              ? "✨"
+              : trailType === "flower"
+                ? "🌸"
+                : trailType === "crown"
+                  ? "👑"
+                  : trailType === "rainbow"
+                    ? "🌈"
+                    : "⭐";
+    trail.textContent = trailEmoji;
     trail.style.left = `${e.pageX}px`;
     trail.style.top = `${e.pageY}px`;
     document.body.appendChild(trail);
@@ -607,16 +628,13 @@ function loadEntryIntoForm() {
   els.needToDoToday.value = entry.morning.needToDoToday || "";
   els.craftDescription.value = entry.morning.craftDescription || "";
   currentCraftImageDataUrl = entry.morning.craftImageDataUrl || "";
+  currentPictureOfDayDataUrl = entry.morning.pictureOfDayDataUrl || "";
+  renderPictureOfDay(currentPictureOfDayDataUrl);
   const weekIndex = getCraftOfWeekIndex(selectedDate);
   const craftOfWeek = CRAFT_OF_THE_WEEK_IMAGES[weekIndex];
   els.craftOfWeekImage.src = craftOfWeek.url;
   els.craftOfWeekImage.alt = craftOfWeek.alt;
   renderCraftImage(currentCraftImageDataUrl);
-
-  const dayIndex = Math.min(selectedDate.getDate() - 1, CRAFT_OF_DAY_IMAGES.length - 1);
-  const craftOfDay = CRAFT_OF_DAY_IMAGES[dayIndex];
-  els.craftOfDayImage.src = craftOfDay.url;
-  els.craftOfDayImage.alt = craftOfDay.alt;
 
   els.gratefulFor.value = entry.night.gratefulFor || "";
   els.madeMeHappy.value = entry.night.madeMeHappy || "";
@@ -636,6 +654,15 @@ function renderCraftImage(dataUrl) {
   els.craftHint.style.display = hasImage ? "none" : "block";
   els.craftImagePreview.closest(".craftFrame")?.classList.toggle("hasImage", hasImage);
   els.removeCraftImageBtn.disabled = !hasImage;
+}
+
+function renderPictureOfDay(dataUrl) {
+  const hasImage = Boolean(dataUrl);
+  els.pictureOfDayPreview.src = hasImage ? dataUrl : "";
+  els.pictureOfDayPreview.style.display = hasImage ? "block" : "none";
+  els.pictureOfDayHint.style.display = hasImage ? "none" : "block";
+  els.pictureOfDayPreview.closest(".pictureOfDayFrame")?.classList.toggle("hasImage", hasImage);
+  els.removePictureOfDayBtn.disabled = !hasImage;
 }
 
 function awardStarIfEligible(entries, iso) {
@@ -659,6 +686,7 @@ function saveMorning() {
   entry.morning.needToDoToday = els.needToDoToday.value;
   entry.morning.craftDescription = els.craftDescription.value;
   entry.morning.craftImageDataUrl = currentCraftImageDataUrl || "";
+  entry.morning.pictureOfDayDataUrl = currentPictureOfDayDataUrl || "";
   entry.updatedAt = Date.now();
 
   const gotStar = awardStarIfEligible(entries, iso);
@@ -697,12 +725,10 @@ function revealAffirmation() {
   const iso = toISODate(selectedDate);
   const entry = getEntry(entries, iso);
 
-  if (!entry.affirmation) {
-    const pick = MORNING_AFFIRMATIONS[Math.floor(Math.random() * MORNING_AFFIRMATIONS.length)];
-    entry.affirmation = pick;
-    entry.updatedAt = Date.now();
-    saveAllEntries(entries);
-  }
+  const pick = MORNING_AFFIRMATIONS[Math.floor(Math.random() * MORNING_AFFIRMATIONS.length)];
+  entry.affirmation = pick;
+  entry.updatedAt = Date.now();
+  saveAllEntries(entries);
 
   els.affirmationText.textContent = `“${entry.affirmation}”`;
   setSaveStatus("Nice! Your affirmation is ready.");
@@ -713,12 +739,10 @@ function revealNightAffirmation() {
   const iso = toISODate(selectedDate);
   const entry = getEntry(entries, iso);
 
-  if (!entry.nightAffirmation) {
-    const pick = NIGHT_AFFIRMATIONS[Math.floor(Math.random() * NIGHT_AFFIRMATIONS.length)];
-    entry.nightAffirmation = pick;
-    entry.updatedAt = Date.now();
-    saveAllEntries(entries);
-  }
+  const pick = NIGHT_AFFIRMATIONS[Math.floor(Math.random() * NIGHT_AFFIRMATIONS.length)];
+  entry.nightAffirmation = pick;
+  entry.updatedAt = Date.now();
+  saveAllEntries(entries);
 
   els.nightAffirmationText.textContent = `"${entry.nightAffirmation}"`;
   setSaveStatus("Nice! Tonight's affirmation is ready.");
@@ -764,6 +788,45 @@ function removeCraftImage() {
   setSaveStatus("Removed craft picture.");
 }
 
+function savePictureOfDay(dataUrl) {
+  const entries = loadAllEntries();
+  const iso = toISODate(selectedDate);
+  const entry = getEntry(entries, iso);
+  entry.morning.pictureOfDayDataUrl = dataUrl || "";
+  entry.updatedAt = Date.now();
+  saveAllEntries(entries);
+  renderSelectedDateHeader();
+}
+
+function onPictureOfDaySelected(file) {
+  if (!file) return;
+  const maxBytes = 1_500_000;
+  if (file.size > maxBytes) {
+    setSaveStatus("That picture is a bit too big. Try a smaller image (under ~1.5MB).");
+    els.pictureOfDayInput.value = "";
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = () => {
+    const dataUrl = typeof reader.result === "string" ? reader.result : "";
+    currentPictureOfDayDataUrl = dataUrl;
+    renderPictureOfDay(currentPictureOfDayDataUrl);
+    savePictureOfDay(currentPictureOfDayDataUrl);
+    setSaveStatus("Picture of the day saved.");
+  };
+  reader.onerror = () => {
+    setSaveStatus("Couldn’t read that picture. Please try again.");
+  };
+  reader.readAsDataURL(file);
+}
+
+function removePictureOfDay() {
+  currentPictureOfDayDataUrl = "";
+  renderPictureOfDay("");
+  savePictureOfDay("");
+  setSaveStatus("Removed picture of the day.");
+}
+
 function shiftMonth(delta) {
   const d = new Date(viewYear, viewMonthIndex + delta, 1);
   viewYear = d.getFullYear();
@@ -803,6 +866,11 @@ function wireEvents() {
     onCraftImageSelected(file);
   });
   els.removeCraftImageBtn.addEventListener("click", removeCraftImage);
+  els.pictureOfDayInput.addEventListener("change", (e) => {
+    const file = e.target.files && e.target.files[0];
+    onPictureOfDaySelected(file);
+  });
+  els.removePictureOfDayBtn.addEventListener("click", removePictureOfDay);
 
   window.addEventListener("resize", () => {
     requestAnimationFrame(syncFlipMinHeight);
