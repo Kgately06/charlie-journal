@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Charlie’s Daily Reflection</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="app">
+      <header class="header">
+        <div class="brandRow">
+          <img src="assets/charlie-avatar.png" alt="Charlie" class="avatar" width="80" height="80" />
+          <div class="brand">
+            <div class="title">Charlie’s Daily Reflection</div>
+            <div class="subtitle">A cozy journal with stars and affirmations</div>
+          </div>
+        </div>
+
+        <div class="themeRow" aria-label="Theme picker">
+          <div class="themeLabel">Theme</div>
+          <div class="themeButtons">
+            <button class="themeBtn isActive" type="button" data-theme="rainbow">🌈 Rainbow</button>
+            <button class="themeBtn" type="button" data-theme="pinks">💜 Pinks &amp; Purples</button>
+            <button class="themeBtn" type="button" data-theme="cozy">☁️ Cozy Pastel</button>
+            <button class="themeBtn" type="button" data-theme="notebook">📓 Notebook</button>
+          </div>
+          <button id="soundToggleBtn" class="soundBtn" type="button">🔊 Sound On</button>
+        </div>
+
+        <div class="statusRow" aria-live="polite">
+          <div class="pill">
+            <span class="pillLabel">Selected date</span>
+            <span id="selectedDateText" class="pillValue">—</span>
+          </div>
+          <div class="pill">
+            <span class="pillLabel">⭐ Stars this week</span>
+            <span id="starsThisWeek" class="pillValue">0</span>
+          </div>
+          <div class="pill">
+            <span class="pillLabel">Today</span>
+            <span id="todayStatus" class="pillValue">—</span>
+          </div>
+          <div id="saveStatus" class="saveStatus" role="status"></div>
+        </div>
+
+        <div class="cursor-picker">
+          <p class="cursorLabel">Choose your cursor:</p>
+          <div class="cursorButtons">
+            <button type="button" onclick="setCursor('heart')">❤️ Heart</button>
+            <button type="button" onclick="setCursor('star')">⭐ Star</button>
+            <button type="button" onclick="setCursor('mystery')">❓ Mystery</button>
+          </div>
+        </div>
+      </header>
+
+      <main class="book" aria-label="Daily journal">
+        <aside class="calendarCard" aria-label="Calendar">
+          <div class="calendarHeader">
+            <div class="calendarTitle">Calendar</div>
+            <div class="calendarControls">
+              <button id="prevMonthBtn" class="iconBtn" type="button" aria-label="Previous month">
+                ‹
+              </button>
+              <div id="monthLabel" class="monthLabel" aria-live="polite">—</div>
+              <button id="nextMonthBtn" class="iconBtn" type="button" aria-label="Next month">
+                ›
+              </button>
+            </div>
+          </div>
+
+          <div class="dowRow" aria-hidden="true">
+            <div>Sun</div>
+            <div>Mon</div>
+            <div>Tue</div>
+            <div>Wed</div>
+            <div>Thu</div>
+            <div>Fri</div>
+            <div>Sat</div>
+          </div>
+
+          <div id="calendarGrid" class="calendarGrid" role="grid" aria-label="Days of month"></div>
+        </aside>
+
+        <section class="pageCard" aria-label="Daily pages">
+          <div class="pageDoodles" aria-hidden="true">
+            <span>⭐</span>
+            <span>abc</span>
+            <span>💜</span>
+          </div>
+          <div class="stickerBar" aria-label="Stickers">
+            <span class="stickerLabel">Stickers:</span>
+            <div class="stickerButtons">
+              <button type="button" class="stickerBtn" data-sticker="🌈">🌈</button>
+              <button type="button" class="stickerBtn" data-sticker="⭐">⭐</button>
+              <button type="button" class="stickerBtn" data-sticker="🦄">🦄</button>
+              <button type="button" class="stickerBtn" data-sticker="🌸">🌸</button>
+              <button type="button" class="stickerBtn" data-sticker="💖">💖</button>
+            </div>
+          </div>
+          <div class="pageTabs" role="tablist" aria-label="Morning and night pages">
+            <button id="morningTab" class="tab isActive" type="button" role="tab" aria-selected="true">
+              <span class="tabLabel">🌅 Morning Page</span>
+              <span id="morningCompleteBadge" class="tabBadge" aria-hidden="true"></span>
+            </button>
+            <button id="nightTab" class="tab" type="button" role="tab" aria-selected="false">
+              <span class="tabLabel">🌙 Night Page</span>
+              <span id="nightCompleteBadge" class="tabBadge" aria-hidden="true"></span>
+            </button>
+          </div>
+
+          <div class="pageViewport">
+            <div id="pageFlip" class="pageFlip isMorning" aria-label="Page flip container">
+              <section
+                id="morningPage"
+                class="pageFace pageFace--front"
+                aria-label="Morning page"
+                aria-hidden="false"
+              >
+                <h2 class="sectionTitle">☀️ Morning Goals</h2>
+                <div class="fieldGrid">
+                  <label class="field">
+                    <span class="labelText">What are my goals today?</span>
+                    <textarea id="goalsToday" rows="3" placeholder="My goals are…"></textarea>
+                  </label>
+                  <label class="field">
+                    <span class="labelText">What am I looking forward to?</span>
+                    <textarea id="lookingForwardTo" rows="3" placeholder="I’m looking forward to…"></textarea>
+                  </label>
+                  <label class="field">
+                    <span class="labelText">What do I need to do today?</span>
+                    <textarea id="needToDoToday" rows="3" placeholder="I need to…"></textarea>
+                  </label>
+                </div>
+
+                <div class="divider"></div>
+
+                <h2 class="sectionTitle">🖌️ Craft of the Day</h2>
+                <div class="craftOfDayFrame" aria-label="Today’s craft idea">
+                  <img id="craftOfDayImage" class="craftOfDayImage" alt="" />
+                </div>
+
+                <h2 class="sectionTitle">🎨 Craft of the Week</h2>
+                <div class="craftRow">
+                  <div class="craftFrame" aria-label="Craft image">
+                    <img id="craftOfWeekImage" class="craftOfWeekImage" alt="" />
+                    <img id="craftImagePreview" class="craftImage" alt="Craft drawing preview" />
+                    <div id="craftHint" class="craftHint">Add Charlie’s drawing here</div>
+                  </div>
+                  <div class="craftControls">
+                    <label class="fileLabel">
+                      <span class="fileLabelText">Add a picture</span>
+                      <input id="craftImageInput" class="fileInput" type="file" accept="image/*" />
+                    </label>
+                    <button id="removeCraftImageBtn" class="secondaryBtn" type="button" disabled>
+                      Remove picture
+                    </button>
+                    <label class="field craftDesc">
+                      <span class="labelText">Description</span>
+                      <textarea id="craftDescription" rows="5" placeholder="This week’s craft is…"></textarea>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <h2 class="sectionTitle">✨ Scratch-Off Affirmation</h2>
+                <div class="affirmationRow">
+                  <button id="revealAffirmationBtn" class="primaryBtn" type="button">
+                    Reveal Today’s Affirmation
+                  </button>
+                  <div id="affirmationText" class="affirmationText" aria-live="polite"></div>
+                </div>
+
+                <div class="actions">
+                  <button id="saveMorningBtn" class="secondaryBtn" type="button">Save Morning</button>
+                  <button id="flipToNightBtn" class="primaryBtn" type="button">Flip to Night Reflection</button>
+                </div>
+              </section>
+
+              <section
+                id="nightPage"
+                class="pageFace pageFace--back"
+                aria-label="Night page"
+                aria-hidden="true"
+              >
+                <h2 class="sectionTitle">🌜 Night Reflection</h2>
+
+                <div class="fieldGrid">
+                  <label class="field">
+                    <span class="labelText">What am I grateful for today?</span>
+                    <textarea id="gratefulFor" rows="3" placeholder="I’m grateful for…"></textarea>
+                  </label>
+                  <label class="field">
+                    <span class="labelText">What made me happy today?</span>
+                    <textarea id="madeMeHappy" rows="3" placeholder="I felt happy when…"></textarea>
+                  </label>
+                  <label class="field">
+                    <span class="labelText">What could I do better tomorrow?</span>
+                    <textarea id="betterTomorrow" rows="3" placeholder="Tomorrow I can…"></textarea>
+                  </label>
+                  <label class="field">
+                    <span class="labelText">What would have made today better?</span>
+                    <textarea id="madeTodayBetter" rows="3" placeholder="Today would be better if…"></textarea>
+                  </label>
+                </div>
+
+                <h2 class="sectionTitle">✨ Tonight's Affirmation</h2>
+                <div class="affirmationRow">
+                  <button id="revealNightAffirmationBtn" class="primaryBtn" type="button">
+                    Reveal Tonight's Affirmation
+                  </button>
+                  <div id="nightAffirmationText" class="affirmationText" aria-live="polite"></div>
+                </div>
+
+                <div class="actions">
+                  <button id="flipToMorningBtn" class="secondaryBtn" type="button">Flip to Morning Page</button>
+                  <button id="saveNightBtn" class="primaryBtn" type="button">Save Night</button>
+                </div>
+              </section>
+            </div>
+          </div>
+        </section>
+      </main>
+      <div id="celebrationOverlay" class="celebrationOverlay" aria-hidden="true">
+        <div class="celebrationStar">⭐</div>
+      </div>
+    </div>
+  </body>
+</html>
+
