@@ -292,9 +292,21 @@ body {
   align-items: start;
 }
 
+.bookLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+}
+
 @media (max-width: 920px) {
   .book {
     grid-template-columns: 1fr;
+  }
+  .bookLeft {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
   }
 }
 
@@ -844,20 +856,17 @@ textarea {
 }
 
 .judySticker {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  z-index: 20;
   pointer-events: none;
-  transform: rotate(-6deg);
+  transform: rotate(-4deg);
 }
 
 .judyStickerImage {
   display: block;
-  width: 100px;
+  width: 230px;
+  max-width: 100%;
   height: auto;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
 }
 
 .celebrationOverlay {
