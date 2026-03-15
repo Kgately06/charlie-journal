@@ -849,17 +849,15 @@ textarea {
   left: 20px;
   z-index: 20;
   pointer-events: none;
-  padding: 10px 16px;
-  background: linear-gradient(135deg, #ffb6c1, #ffc0cb);
-  border: 2px solid rgba(255, 182, 193, 0.9);
-  border-radius: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.6);
-  font-family: "Fredoka", ui-sans-serif, system-ui, sans-serif;
-  font-weight: 700;
-  font-size: 18px;
-  color: #8b4513;
   transform: rotate(-6deg);
-  white-space: nowrap;
+}
+
+.judyStickerImage {
+  display: block;
+  width: 100px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .celebrationOverlay {
