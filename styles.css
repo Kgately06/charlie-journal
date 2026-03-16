@@ -321,7 +321,7 @@ body {
 .calendarCard {
   padding: 18px 16px;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   max-width: 270px;
 }
 
@@ -333,40 +333,70 @@ body {
   pointer-events: none;
 }
 
-.calendarHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  position: relative;
-}
-
 .calendarTitle {
   font-weight: 800;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
 }
 
 .calendarControls {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
+  position: relative;
+  z-index: 2;
+  margin-bottom: 10px;
+  min-width: 0;
+}
+
+.calendarControls .iconBtn {
+  flex-shrink: 0;
+  min-width: 4rem;
+  width: auto;
+  padding: 0 8px;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .monthLabel {
   font-weight: 700;
   font-size: 13px;
   color: var(--muted);
-  min-width: 130px;
+  flex: 1;
+  min-width: 0;
   text-align: center;
 }
 
+.todayBtn {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--ink);
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+}
+
+.todayBtn:hover {
+  background: rgba(255, 255, 255, 1);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
 .iconBtn {
+  position: relative;
+  z-index: 2;
   border: 1px solid rgba(0, 0, 0, 0.1);
   background: rgba(255, 255, 255, 0.8);
-  border-radius: 12px;
-  width: 34px;
-  height: 34px;
+  border-radius: 10px;
+  height: 32px;
   cursor: pointer;
-  font-size: 18px;
   line-height: 1;
 }
 

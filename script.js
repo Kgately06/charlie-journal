@@ -47,6 +47,7 @@ const els = {
   monthLabel: document.getElementById("monthLabel"),
   prevMonthBtn: document.getElementById("prevMonthBtn"),
   nextMonthBtn: document.getElementById("nextMonthBtn"),
+  todayBtn: document.getElementById("todayBtn"),
   selectedDateText: document.getElementById("selectedDateText"),
   starsThisWeek: document.getElementById("starsThisWeek"),
   todayStatus: document.getElementById("todayStatus"),
@@ -832,11 +833,23 @@ function shiftMonth(delta) {
   viewYear = d.getFullYear();
   viewMonthIndex = d.getMonth();
   renderCalendar();
+  renderSelectedDateHeader();
 }
 
 function wireEvents() {
-  els.prevMonthBtn.addEventListener("click", () => shiftMonth(-1));
-  els.nextMonthBtn.addEventListener("click", () => shiftMonth(1));
+  if (els.prevMonthBtn) els.prevMonthBtn.addEventListener("click", (e) => { e.preventDefault(); shiftMonth(-1); });
+  if (els.nextMonthBtn) els.nextMonthBtn.addEventListener("click", (e) => { e.preventDefault(); shiftMonth(1); });
+  if (els.todayBtn) els.todayBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const today = new Date();
+    selectedDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    viewYear = today.getFullYear();
+    viewMonthIndex = today.getMonth();
+    renderCalendar();
+    renderSelectedDateHeader();
+    loadEntryIntoForm();
+    setSaveStatus("Jumped to today.");
+  });
 
   els.morningTab.addEventListener("click", () => {
     setActiveTab("morning");

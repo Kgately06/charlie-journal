@@ -69,18 +69,13 @@
       <main class="book" aria-label="Daily journal">
         <div class="bookLeft">
         <aside class="calendarCard" aria-label="Calendar">
-          <div class="calendarHeader">
-            <div class="calendarTitle">Calendar</div>
-            <div class="calendarControls">
-              <button id="prevMonthBtn" class="iconBtn" type="button" aria-label="Previous month">
-                ‹
-              </button>
-              <div id="monthLabel" class="monthLabel" aria-live="polite">—</div>
-              <button id="nextMonthBtn" class="iconBtn" type="button" aria-label="Next month">
-                ›
-              </button>
-            </div>
+          <div class="calendarTitle">Calendar</div>
+          <div class="calendarControls">
+            <button id="prevMonthBtn" class="iconBtn iconBtn--prev" type="button" aria-label="Previous month" title="Previous month"><span aria-hidden="true">&#8249;</span> Prev</button>
+            <div id="monthLabel" class="monthLabel" aria-live="polite">—</div>
+            <button id="nextMonthBtn" class="iconBtn iconBtn--next" type="button" aria-label="Next month" title="Next month">Next <span aria-hidden="true">&#8250;</span></button>
           </div>
+          <button id="todayBtn" class="todayBtn" type="button">Today</button>
 
           <div class="dowRow" aria-hidden="true">
             <div>Sun</div>
