@@ -1,4 +1,4 @@
-# Netlify config for Charlie's Daily Reflection (static site)
+that # Netlify config for Charlie's Daily Reflection (static site)
 [build]
   publish = "."
   # No build step — index.html, styles.css, script.js, assets, cursors served as-is

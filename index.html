@@ -14,6 +14,14 @@
     <script src="script.js" defer></script>
   </head>
   <body>
+    <div id="moonThemeScene" class="moonThemeScene" aria-hidden="true">
+      <div id="moonThemeMoon" class="moonThemeMoon"></div>
+      <div class="shootingStars" aria-hidden="true">
+        <span class="shootingStar"></span>
+        <span class="shootingStar shootingStar--2"></span>
+        <span class="shootingStar shootingStar--3"></span>
+      </div>
+    </div>
     <div class="app">
       <header class="header">
         <div class="brandRow">
@@ -31,8 +39,37 @@
             <button class="themeBtn" type="button" data-theme="pinks">💜 Pinks &amp; Purples</button>
             <button class="themeBtn" type="button" data-theme="cozy">☁️ Cozy Pastel</button>
             <button class="themeBtn" type="button" data-theme="notebook">📓 Notebook</button>
+            <button class="themeBtn" type="button" data-theme="moon">🌙 Moon</button>
           </div>
           <button id="soundToggleBtn" class="soundBtn" type="button">🔊 Sound On</button>
+          <button id="weatherBtn" class="weatherBtn" type="button" aria-expanded="false" aria-controls="weatherCard">
+            <span class="weatherBtnBg" aria-hidden="true"></span>
+            <span class="weatherBtnLabel">☀️ Weather</span>
+          </button>
+        </div>
+
+        <div id="weatherCard" class="weatherCard" role="region" aria-label="Weather and what to wear" hidden>
+          <div class="weatherCardInner">
+            <p id="weatherLocation" class="weatherLocation"></p>
+            <p id="weatherTemp" class="weatherTemp"></p>
+            <p id="weatherCondition" class="weatherCondition"></p>
+            <h3 class="weatherWearTitle">What to wear</h3>
+            <p id="weatherWear" class="weatherWear"></p>
+            <p id="weatherError" class="weatherError" hidden></p>
+          </div>
+        </div>
+
+        <div id="moonPhaseWidget" class="moonPhaseWidget" aria-live="polite">
+          <span id="moonPhaseIconEl" class="moonPhaseWidgetIcon" aria-hidden="true"></span>
+          <div class="moonPhaseWidgetText">
+            <span id="moonPhaseLabelEl" class="moonPhaseWidgetLabel"></span>
+            <p id="moonPhaseSpecialEl" class="moonPhaseWidgetSpecial"></p>
+          </div>
+        </div>
+
+        <div id="moonPhaseCard" class="moonPhaseCard" aria-live="polite" hidden>
+          <h3 id="moonPhaseCardTitle" class="moonPhaseCardTitle"></h3>
+          <p id="moonPhaseCardSpecial" class="moonPhaseCardSpecial"></p>
         </div>
 
         <div class="statusRow" aria-live="polite">

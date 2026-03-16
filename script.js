@@ -29,6 +29,18 @@ const NIGHT_AFFIRMATIONS = [
 ];
 
 // Craft of the week: one per Sun–Sat week (new craft every Sunday). Fun, bright kid crafts. Pexels/Unsplash license.
+/** Moon phases with kid-friendly "why it's special" for all themes */
+const MOON_PHASES = [
+  { emoji: "🌑", label: "New Moon", special: "A fresh start! The moon is taking a little rest before it starts growing again. Great night for new ideas and quiet dreams." },
+  { emoji: "🌒", label: "Waxing Crescent", special: "A tiny silver smile in the sky. The moon is growing a little every night. Perfect time to try something new!" },
+  { emoji: "🌓", label: "First Quarter", special: "Half the moon is lit up—like a glowing smile. It’s halfway to full! A good night to feel brave and strong." },
+  { emoji: "🌔", label: "Waxing Gibbous", special: "Almost full! The moon is getting brighter. A cozy night to get ready for something exciting tomorrow." },
+  { emoji: "🌕", label: "Full Moon", special: "The moon is round and bright! People have told stories about it for thousands of years. Make a wish—it’s a magical night." },
+  { emoji: "🌖", label: "Waning Gibbous", special: "The full moon is gently getting smaller. It’s a calm night to think about what made you happy this week." },
+  { emoji: "🌗", label: "Last Quarter", special: "Half the moon is shining. It’s a good night to share with someone you love or write in your journal." },
+  { emoji: "🌘", label: "Waning Crescent", special: "A thin silver sliver. The moon is resting before it becomes new again. A peaceful night for sweet dreams." },
+];
+
 const CRAFT_OF_THE_WEEK_IMAGES = [
   { url: "https://images.pexels.com/photos/8014345/pexels-photo-8014345.jpeg?auto=compress&cs=tinysrgb&w=400", alt: "This week’s craft: rainbow clay" },
   { url: "https://images.pexels.com/photos/7054789/pexels-photo-7054789.jpeg?auto=compress&cs=tinysrgb&w=400", alt: "This week’s craft: colorful pencils" },
@@ -91,6 +103,22 @@ const els = {
   flipToMorningBtn: document.getElementById("flipToMorningBtn"),
   soundToggleBtn: document.getElementById("soundToggleBtn"),
   celebrationOverlay: document.getElementById("celebrationOverlay"),
+  moonPhaseWidget: document.getElementById("moonPhaseWidget"),
+  moonPhaseCard: document.getElementById("moonPhaseCard"),
+  moonPhaseIconEl: document.getElementById("moonPhaseIconEl"),
+  moonPhaseLabelEl: document.getElementById("moonPhaseLabelEl"),
+  moonPhaseSpecialEl: document.getElementById("moonPhaseSpecialEl"),
+  moonPhaseCardTitle: document.getElementById("moonPhaseCardTitle"),
+  moonPhaseCardSpecial: document.getElementById("moonPhaseCardSpecial"),
+  moonThemeScene: document.getElementById("moonThemeScene"),
+  moonThemeMoon: document.getElementById("moonThemeMoon"),
+  weatherBtn: document.getElementById("weatherBtn"),
+  weatherCard: document.getElementById("weatherCard"),
+  weatherLocation: document.getElementById("weatherLocation"),
+  weatherTemp: document.getElementById("weatherTemp"),
+  weatherCondition: document.getElementById("weatherCondition"),
+  weatherWear: document.getElementById("weatherWear"),
+  weatherError: document.getElementById("weatherError"),
 };
 
 let viewYear;
@@ -133,6 +161,16 @@ function formatLongDate(d) {
   const weekday = d.toLocaleDateString(undefined, { weekday: "long" });
   const month = d.toLocaleDateString(undefined, { month: "long" });
   return `${weekday}, ${month} ${d.getDate()}, ${d.getFullYear()}`;
+}
+
+/** Approximate moon phase from date (0–7). Reference new moon Jan 6, 2000. */
+function getMoonPhase(date) {
+  const LUNAR_DAYS = 29.530588;
+  const epoch = new Date(2000, 0, 6);
+  const daysSince = (date.getTime() - epoch.getTime()) / 864e5;
+  const cycle = ((daysSince % LUNAR_DAYS) + LUNAR_DAYS) % LUNAR_DAYS;
+  const index = Math.floor((cycle / LUNAR_DAYS) * 8) % 8;
+  return MOON_PHASES[index];
 }
 
 function loadAllEntries() {
@@ -280,6 +318,149 @@ function applyTheme(theme) {
   buttons.forEach((btn) => {
     btn.classList.toggle("isActive", btn.dataset.theme === next);
   });
+  updateMoonPhaseUI();
+}
+
+function updateMoonPhaseUI() {
+  const d = selectedDate || new Date();
+  const phase = getMoonPhase(d);
+  const isMoonTheme = document.body.dataset.theme === "moon";
+
+  if (els.moonThemeScene) els.moonThemeScene.hidden = !isMoonTheme;
+  if (els.moonThemeMoon) els.moonThemeMoon.textContent = isMoonTheme ? phase.emoji : "";
+
+  if (els.moonPhaseCard) {
+    els.moonPhaseCard.hidden = !isMoonTheme;
+    if (isMoonTheme) {
+      if (els.moonPhaseCardTitle) els.moonPhaseCardTitle.textContent = phase.label;
+      if (els.moonPhaseCardSpecial) els.moonPhaseCardSpecial.textContent = phase.special;
+    }
+  }
+
+  if (els.moonPhaseWidget) {
+    els.moonPhaseWidget.hidden = false;
+    if (els.moonPhaseIconEl) els.moonPhaseIconEl.textContent = phase.emoji;
+    if (els.moonPhaseLabelEl) els.moonPhaseLabelEl.textContent = phase.label;
+    if (els.moonPhaseSpecialEl) els.moonPhaseSpecialEl.textContent = phase.special;
+  }
+}
+
+const WEATHER_MA_FALLBACK = { lat: 42.36, lon: -71.06 };
+let weatherLoaded = false;
+let weatherLoading = false;
+
+function getWhatToWear(tempF, weatherCode) {
+  const code = Number(weatherCode);
+  const isRain = code >= 51 && code <= 67 || code >= 80 && code <= 82;
+  const isSnow = code >= 71 && code <= 77 || code >= 85 && code <= 86;
+  const isStorm = code >= 95 && code <= 99;
+  const isFog = code === 45 || code === 48;
+
+  if (isStorm) return "Stay inside if you can! If you go out, wear a raincoat and avoid open areas.";
+  if (isRain) return "Raincoat or jacket and maybe rain boots — and an umbrella!";
+  if (isSnow) return "Warm coat, hat, mittens, and boots. Layer up!";
+  if (isFog) return "A light jacket is good — it can feel chilly in the fog.";
+  if (tempF >= 80) return "Shorts and a T-shirt! Maybe a hat and sunscreen.";
+  if (tempF >= 65) return "T-shirt and comfy pants or shorts. Maybe a light layer for morning.";
+  if (tempF >= 50) return "Sweater or light jacket weather. Layers are your friend!";
+  if (tempF >= 32) return "Warm coat, hat, and maybe gloves. Bundle up!";
+  return "Super cold! Big coat, hat, scarf, and mittens. Stay cozy!";
+}
+
+function getConditionLabel(weatherCode) {
+  const code = Number(weatherCode);
+  if (code === 0) return "Clear";
+  if (code === 1) return "Mostly clear";
+  if (code === 2) return "Partly cloudy";
+  if (code === 3) return "Cloudy";
+  if (code === 45 || code === 48) return "Foggy";
+  if (code >= 51 && code <= 67) return "Rainy";
+  if (code >= 71 && code <= 77) return "Snowy";
+  if (code >= 80 && code <= 82) return "Rain showers";
+  if (code >= 85 && code <= 86) return "Snow showers";
+  if (code >= 95 && code <= 99) return "Thunderstorms";
+  return "Mixed";
+}
+
+function showWeatherCard(show) {
+  if (!els.weatherCard || !els.weatherBtn) return;
+  els.weatherCard.hidden = !show;
+  els.weatherBtn.setAttribute("aria-expanded", show ? "true" : "false");
+}
+
+function renderWeather(data, locationLabel) {
+  if (!els.weatherTemp || !els.weatherCondition || !els.weatherWear || !els.weatherLocation) return;
+  const tempC = data.current?.temperature_2m;
+  const code = data.current?.weather_code;
+  const tempF = tempC != null ? Math.round(tempC * 9 / 5 + 32) : null;
+
+  els.weatherLocation.textContent = locationLabel || "Your area";
+  els.weatherTemp.textContent = tempF != null ? `${tempF}°F` : "—";
+  els.weatherCondition.textContent = code != null ? getConditionLabel(code) : "—";
+  els.weatherWear.textContent = (tempF != null && code != null) ? getWhatToWear(tempF, code) : "—";
+  if (els.weatherError) {
+    els.weatherError.hidden = true;
+    els.weatherError.textContent = "";
+  }
+}
+
+function setWeatherError(msg) {
+  if (!els.weatherError) return;
+  els.weatherError.hidden = false;
+  els.weatherError.textContent = msg;
+  if (els.weatherLocation) els.weatherLocation.textContent = "";
+  if (els.weatherTemp) els.weatherTemp.textContent = "—";
+  if (els.weatherCondition) els.weatherCondition.textContent = "—";
+  if (els.weatherWear) els.weatherWear.textContent = "—";
+}
+
+function fetchWeather(lat, lon, locationLabel) {
+  if (weatherLoading) return;
+  weatherLoading = true;
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&timezone=America/New_York`;
+  fetch(url)
+    .then((res) => {
+      if (!res.ok) throw new Error("Weather unavailable");
+      return res.json();
+    })
+    .then((data) => {
+      weatherLoaded = true;
+      renderWeather(data, locationLabel);
+    })
+    .catch(() => {
+      setWeatherError("Couldn’t load weather. Try again in a moment!");
+    })
+    .finally(() => {
+      weatherLoading = false;
+    });
+}
+
+function getWeatherAndShow() {
+  if (weatherLoaded || weatherLoading) return;
+  if (!navigator.geolocation) {
+    fetchWeather(WEATHER_MA_FALLBACK.lat, WEATHER_MA_FALLBACK.lon, "Massachusetts");
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      const { latitude, longitude } = pos.coords;
+      fetchWeather(latitude, longitude, "Near you");
+    },
+    () => {
+      fetchWeather(WEATHER_MA_FALLBACK.lat, WEATHER_MA_FALLBACK.lon, "Massachusetts");
+    },
+    { timeout: 8000, maximumAge: 300000 }
+  );
+}
+
+function toggleWeatherCard() {
+  const isOpen = !els.weatherCard.hidden;
+  if (isOpen) {
+    showWeatherCard(false);
+    return;
+  }
+  showWeatherCard(true);
+  if (!weatherLoaded && !weatherLoading) getWeatherAndShow();
 }
 
 function initTheme() {
@@ -562,6 +743,7 @@ function renderSelectedDateHeader() {
   const entry = getEntry(entries, iso);
   els.starsThisWeek.textContent = String(countStarsForWeek(entries, selectedDate));
   renderCompletionUI(entry);
+  updateMoonPhaseUI();
 }
 
 function renderCompletionUI(entry) {
@@ -900,6 +1082,12 @@ function wireEvents() {
   if (els.soundToggleBtn) {
     els.soundToggleBtn.addEventListener("click", () => {
       setSoundEnabled(!soundOn);
+    });
+  }
+
+  if (els.weatherBtn) {
+    els.weatherBtn.addEventListener("click", () => {
+      toggleWeatherCard();
     });
   }
 
