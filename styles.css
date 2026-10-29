@@ -61,14 +61,14 @@ body[data-theme="cozy"] {
 }
 
 body[data-theme="notebook"] {
-  --bg0: #f3f3f3;
-  --bg1: #ffffff;
+  --bg0: #ff45b5;
+  --bg1: #ffd1ed;
   --ink: #21314a;
   --muted: rgba(33, 49, 74, 0.7);
   --paper: #ffffff;
-  --binder: rgba(194, 209, 225, 0.7);
-  --accent: #2e6bdc;
-  --accent2: #ff6b6b;
+  --binder: rgba(255, 76, 178, 0.35);
+  --accent: #d81b85;
+  --accent2: #ff6bbd;
 }
 
 /* Moon theme: night sky with stars and moon */
@@ -1387,4 +1387,23 @@ textarea {
 }
 .scratchCover[hidden] {
   display: none;
+}
+
+body[data-theme="notebook"] .scratchCover {
+  cursor: pointer;
+  touch-action: pan-y;
+}
+body[data-theme="notebook"] .scratchCard {
+  background: #fff0f8;
+  border-color: #e798c0;
+}
+body[data-theme="notebook"] .scratchCard .affirmationText {
+  display: block;
+  align-content: center;
+  font-family: ui-monospace, "Courier New", monospace;
+  background: #fff0f8;
+}
+.affirmationText.isTyping::after {
+  content: "▏";
+  color: #c51f7d;
 }

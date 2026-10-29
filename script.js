@@ -320,6 +320,7 @@ function applyTheme(theme) {
     btn.classList.toggle("isActive", btn.dataset.theme === next);
   });
   updateMoonPhaseUI();
+  Object.values(scratchTickets).forEach((ticket) => ticket.themeChanged());
   requestAnimationFrame(syncFlipMinHeight);
 }
 
@@ -915,6 +916,54 @@ function createScratchTicket(canvas, text, button, field, choices) {
   let width = 1;
   let height = 1;
   let ratio = 1;
+  let typingTimer = null;
+  const hint = canvas.parentElement.parentElement.querySelector(".scratchHint");
+  const heading = canvas.parentElement.parentElement.previousElementSibling;
+  const originalHeading = heading.textContent;
+  const isNotebook = () => document.body.dataset.theme === "notebook";
+
+  function stopTyping() {
+    clearTimeout(typingTimer);
+    typingTimer = null;
+    text.classList.remove("isTyping");
+  }
+
+  function updateLabels() {
+    hint.textContent = isNotebook()
+      ? "Tap the pink card and watch your affirmation type itself onto the page."
+      : "Rub the silver ticket with your finger or mouse to uncover a little encouragement.";
+    heading.textContent = isNotebook() ? "✨ A Little Encouragement" : originalHeading;
+    button.textContent = isNotebook()
+      ? (revealed ? "Type another affirmation" : "Type my affirmation")
+      : (revealed ? "Reveal another affirmation" : "Reveal without scratching");
+  }
+
+  function showMessage() {
+    stopTyping();
+    const fullText = `“${message}”`;
+    const animate = isNotebook() && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!animate) {
+      text.textContent = fullText;
+      text.removeAttribute("aria-hidden");
+      return;
+    }
+    text.textContent = "";
+    text.setAttribute("aria-hidden", "true");
+    text.classList.add("isTyping");
+    let length = 0;
+    function typeNext() {
+      length++;
+      text.textContent = fullText.slice(0, length);
+      if (length < fullText.length) typingTimer = setTimeout(typeNext, 42);
+      else {
+        stopTyping();
+        text.removeAttribute("aria-hidden");
+        setSaveStatus(fullText);
+        requestAnimationFrame(syncFlipMinHeight);
+      }
+    }
+    typeNext();
+  }
 
   function pick() {
     return choices[Math.floor(Math.random() * choices.length)];
@@ -948,9 +997,9 @@ function createScratchTicket(canvas, text, button, field, choices) {
     ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
     ctx.globalCompositeOperation = "source-over";
     const silver = ctx.createLinearGradient(0, 0, width, height);
-    silver.addColorStop(0, "#b8bfce");
-    silver.addColorStop(0.45, "#eef0f6");
-    silver.addColorStop(1, "#a5adbf");
+    silver.addColorStop(0, isNotebook() ? "#ffc6e7" : "#b8bfce");
+    silver.addColorStop(0.45, isNotebook() ? "#ffe6f3" : "#eef0f6");
+    silver.addColorStop(1, isNotebook() ? "#ff92d1" : "#a5adbf");
     ctx.fillStyle = silver;
     ctx.fillRect(0, 0, width, height);
     ctx.fillStyle = "rgba(255,255,255,0.45)";
@@ -961,10 +1010,11 @@ function createScratchTicket(canvas, text, button, field, choices) {
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.font = "bold 18px system-ui, sans-serif";
-    ctx.fillText("✦ Scratch to reveal ✦", width / 2, height / 2 - 10);
+    ctx.font = `bold ${width < 280 ? 15 : 18}px system-ui, sans-serif`;
+    ctx.fillText(isNotebook() ? "✨ Tap to type ✨" : "✦ Scratch to reveal ✦", width / 2, height / 2 - 10);
     ctx.font = "13px system-ui, sans-serif";
     ctx.fillText("A little kindness, just for you", width / 2, height / 2 + 18);
-    strokes.forEach(eraseStroke);
+    if (!isNotebook()) strokes.forEach(eraseStroke);
   }
 
   function reveal() {
@@ -972,9 +1022,8 @@ function createScratchTicket(canvas, text, button, field, choices) {
     revealed = true;
     activePointer = null;
     canvas.hidden = true;
-    text.textContent = `“${message}”`;
-    text.removeAttribute("aria-hidden");
-    button.textContent = "Reveal another affirmation";
+    showMessage();
+    updateLabels();
     const entries = loadAllEntries();
     const entry = getEntry(entries, toISODate(selectedDate));
     entry[field] = message;
@@ -995,12 +1044,16 @@ function createScratchTicket(canvas, text, button, field, choices) {
 
   canvas.addEventListener("pointerdown", (event) => {
     if (revealed || !ctx || activePointer !== null || (event.pointerType === "mouse" && event.button !== 0)) return;
+    if (isNotebook()) return;
     event.preventDefault();
     activePointer = event.pointerId;
     canvas.setPointerCapture(event.pointerId);
     const stroke = [point(event)];
     strokes.push(stroke);
     eraseStroke(stroke);
+  });
+  canvas.addEventListener("click", () => {
+    if (isNotebook() && !revealed) reveal();
   });
   canvas.addEventListener("pointermove", (event) => {
     if (event.pointerId !== activePointer) return;
@@ -1035,7 +1088,17 @@ function createScratchTicket(canvas, text, button, field, choices) {
 
   return {
     reveal,
+    themeChanged() {
+      if (typingTimer !== null) {
+        stopTyping();
+        text.textContent = `“${message}”`;
+        text.removeAttribute("aria-hidden");
+      }
+      updateLabels();
+      requestAnimationFrame(paint);
+    },
     reset(saved) {
+      stopTyping();
       activePointer = null;
       strokes = [];
       message = saved || pick();
@@ -1044,7 +1107,7 @@ function createScratchTicket(canvas, text, button, field, choices) {
       text.textContent = `“${message}”`;
       if (revealed) text.removeAttribute("aria-hidden");
       else text.setAttribute("aria-hidden", "true");
-      button.textContent = revealed ? "Reveal another affirmation" : "Reveal without scratching";
+      updateLabels();
       requestAnimationFrame(paint);
     },
   };
