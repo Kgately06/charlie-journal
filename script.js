@@ -951,7 +951,7 @@ function createScratchTicket(canvas, text, button, field, choices) {
     heading.textContent = isNotebook() ? "✨ A Little Encouragement" : originalHeading;
     button.textContent = isNotebook()
       ? (revealed ? "Type another affirmation" : "Type my affirmation")
-      : (revealed ? "Reveal another affirmation" : "Reveal without scratching");
+      : (revealed ? "Scratch another affirmation" : "Reveal without scratching");
   }
 
   function showMessage() {
@@ -982,7 +982,9 @@ function createScratchTicket(canvas, text, button, field, choices) {
   }
 
   function pick() {
-    return choices[Math.floor(Math.random() * choices.length)];
+    const available = choices.filter(choice => choice !== message);
+    const pool = available.length ? available : choices;
+    return pool[Math.floor(Math.random() * pool.length)];
   }
 
   function eraseStroke(points) {
@@ -1034,6 +1036,21 @@ function createScratchTicket(canvas, text, button, field, choices) {
   }
 
   function reveal() {
+    if (revealed && !isNotebook() && ctx) {
+      stopTyping();
+      message = pick();
+      revealed = false;
+      activePointer = null;
+      strokes = [];
+      text.textContent = `“${message}”`;
+      text.setAttribute("aria-hidden", "true");
+      canvas.hidden = false;
+      updateLabels();
+      paint();
+      setSaveStatus("A fresh affirmation is ready to scratch!");
+      requestAnimationFrame(syncFlipMinHeight);
+      return;
+    }
     if (revealed) message = pick();
     revealed = true;
     activePointer = null;
