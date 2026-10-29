@@ -137,6 +137,10 @@
             <span>abc</span>
             <span>💜</span>
           </div>
+          <div class="notebookNotes notebookNotes--top">
+            <span>✨ You’ve got this!</span>
+            <span>🌈 Big dreams start here.</span>
+          </div>
           <div class="stickerBar" aria-label="Stickers">
             <span class="stickerLabel">Stickers:</span>
             <div class="stickerButtons">
@@ -229,10 +233,14 @@
 
                 <h2 class="sectionTitle">✨ Scratch-Off Affirmation</h2>
                 <div class="affirmationRow">
+                  <p class="scratchHint" id="morningScratchHint">Rub the silver ticket with your finger or mouse to uncover a little encouragement.</p>
+                  <div class="scratchCard">
+                    <div id="affirmationText" class="affirmationText" aria-live="polite"></div>
+                    <canvas id="morningScratch" class="scratchCover" aria-hidden="true"></canvas>
+                  </div>
                   <button id="revealAffirmationBtn" class="primaryBtn" type="button">
-                    Reveal Today’s Affirmation
+                    Reveal without scratching
                   </button>
-                  <div id="affirmationText" class="affirmationText" aria-live="polite"></div>
                 </div>
 
                 <div class="actions">
@@ -270,10 +278,14 @@
 
                 <h2 class="sectionTitle">✨ Tonight's Affirmation</h2>
                 <div class="affirmationRow">
+                  <p class="scratchHint" id="nightScratchHint">Rub the silver ticket with your finger or mouse to uncover a little encouragement.</p>
+                  <div class="scratchCard">
+                    <div id="nightAffirmationText" class="affirmationText" aria-live="polite"></div>
+                    <canvas id="nightScratch" class="scratchCover" aria-hidden="true"></canvas>
+                  </div>
                   <button id="revealNightAffirmationBtn" class="primaryBtn" type="button">
-                    Reveal Tonight's Affirmation
+                    Reveal without scratching
                   </button>
-                  <div id="nightAffirmationText" class="affirmationText" aria-live="polite"></div>
                 </div>
 
                 <div class="actions">
@@ -282,6 +294,10 @@
                 </div>
               </section>
             </div>
+          </div>
+          <div class="notebookNotes notebookNotes--bottom">
+            <span>🌱 One little step at a time.</span>
+            <span>💛 Keep being you!</span>
           </div>
         </section>
       </main>

@@ -1,6 +1,7 @@
 const STORAGE_KEY = "cj.entries.v1";
 const THEME_STORAGE_KEY = "cj.theme.v1";
 const SOUND_STORAGE_KEY = "cj.sound.v1";
+const scratchTickets = {};
 
 const MORNING_AFFIRMATIONS = [
   "I am brave and I can try new things.",
@@ -319,6 +320,7 @@ function applyTheme(theme) {
     btn.classList.toggle("isActive", btn.dataset.theme === next);
   });
   updateMoonPhaseUI();
+  requestAnimationFrame(syncFlipMinHeight);
 }
 
 function updateMoonPhaseUI() {
@@ -824,8 +826,8 @@ function loadEntryIntoForm() {
   els.betterTomorrow.value = entry.night.betterTomorrow || "";
   els.madeTodayBetter.value = entry.night.madeTodayBetter || "";
 
-  els.affirmationText.textContent = entry.affirmation ? `“${entry.affirmation}”` : "";
-  els.nightAffirmationText.textContent = entry.nightAffirmation ? `"${entry.nightAffirmation}"` : "";
+  scratchTickets.morning.reset(entry.affirmation);
+  scratchTickets.night.reset(entry.nightAffirmation);
   requestAnimationFrame(syncFlipMinHeight);
 }
 
@@ -903,32 +905,157 @@ function saveNight() {
   setSaveStatus(gotStar ? "Saved. You earned ⭐ for completing both pages!" : "Saved.");
 }
 
+// Pointer Events support fingers, Apple Pencil, and mice with the same interaction.
+function createScratchTicket(canvas, text, button, field, choices) {
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+  let message = "";
+  let revealed = false;
+  let activePointer = null;
+  let strokes = [];
+  let width = 1;
+  let height = 1;
+  let ratio = 1;
+
+  function pick() {
+    return choices[Math.floor(Math.random() * choices.length)];
+  }
+
+  function eraseStroke(points) {
+    if (!ctx || !points.length) return;
+    ctx.globalCompositeOperation = "destination-out";
+    ctx.lineWidth = 38;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.beginPath();
+    ctx.moveTo(points[0].x * width, points[0].y * height);
+    for (const point of points.slice(1)) ctx.lineTo(point.x * width, point.y * height);
+    ctx.stroke();
+    const last = points[points.length - 1];
+    ctx.beginPath();
+    ctx.arc(last.x * width, last.y * height, 19, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  function paint() {
+    if (!ctx || revealed) return;
+    // Layout size, rather than transformed bounds, also works on the flipped page.
+    width = canvas.clientWidth;
+    height = canvas.clientHeight;
+    if (!width || !height) return;
+    ratio = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(width * ratio);
+    canvas.height = Math.round(height * ratio);
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    ctx.globalCompositeOperation = "source-over";
+    const silver = ctx.createLinearGradient(0, 0, width, height);
+    silver.addColorStop(0, "#b8bfce");
+    silver.addColorStop(0.45, "#eef0f6");
+    silver.addColorStop(1, "#a5adbf");
+    ctx.fillStyle = silver;
+    ctx.fillRect(0, 0, width, height);
+    ctx.fillStyle = "rgba(255,255,255,0.45)";
+    for (let y = 8; y < height; y += 12) {
+      for (let x = 8; x < width; x += 12) ctx.fillRect(x, y, 2, 2);
+    }
+    ctx.fillStyle = "#33415d";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.font = "bold 18px system-ui, sans-serif";
+    ctx.fillText("✦ Scratch to reveal ✦", width / 2, height / 2 - 10);
+    ctx.font = "13px system-ui, sans-serif";
+    ctx.fillText("A little kindness, just for you", width / 2, height / 2 + 18);
+    strokes.forEach(eraseStroke);
+  }
+
+  function reveal() {
+    if (revealed) message = pick();
+    revealed = true;
+    activePointer = null;
+    canvas.hidden = true;
+    text.textContent = `“${message}”`;
+    text.removeAttribute("aria-hidden");
+    button.textContent = "Reveal another affirmation";
+    const entries = loadAllEntries();
+    const entry = getEntry(entries, toISODate(selectedDate));
+    entry[field] = message;
+    entry.updatedAt = Date.now();
+    try {
+      saveAllEntries(entries);
+      setSaveStatus("Your affirmation is revealed. Keep being you!");
+    } catch {
+      setSaveStatus("Your affirmation is revealed, but this browser couldn't save it.");
+    }
+    requestAnimationFrame(syncFlipMinHeight);
+  }
+
+  function point(event) {
+    const rect = canvas.getBoundingClientRect();
+    return { x: (event.clientX - rect.left) / rect.width, y: (event.clientY - rect.top) / rect.height };
+  }
+
+  canvas.addEventListener("pointerdown", (event) => {
+    if (revealed || !ctx || activePointer !== null || (event.pointerType === "mouse" && event.button !== 0)) return;
+    event.preventDefault();
+    activePointer = event.pointerId;
+    canvas.setPointerCapture(event.pointerId);
+    const stroke = [point(event)];
+    strokes.push(stroke);
+    eraseStroke(stroke);
+  });
+  canvas.addEventListener("pointermove", (event) => {
+    if (event.pointerId !== activePointer) return;
+    event.preventDefault();
+    const stroke = strokes[strokes.length - 1];
+    const events = event.getCoalescedEvents ? event.getCoalescedEvents() : [event];
+    for (const sample of events.length ? events : [event]) {
+      const previous = stroke[stroke.length - 1];
+      const next = point(sample);
+      stroke.push(next);
+      eraseStroke([previous, next]);
+    }
+  });
+  function finishStroke(event) {
+    if (event.pointerId !== activePointer) return;
+    activePointer = null;
+    if (canvas.hasPointerCapture(event.pointerId)) canvas.releasePointerCapture(event.pointerId);
+    if (!ctx || revealed) return;
+    const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+    let clear = 0;
+    let samples = 0;
+    for (let i = 3; i < pixels.length; i += 64) {
+      samples++;
+      if (pixels[i] < 128) clear++;
+    }
+    if (clear / samples >= 0.55) reveal();
+  }
+  canvas.addEventListener("pointerup", finishStroke);
+  canvas.addEventListener("pointercancel", finishStroke);
+  canvas.addEventListener("lostpointercapture", finishStroke);
+  new ResizeObserver(paint).observe(canvas.parentElement);
+
+  return {
+    reveal,
+    reset(saved) {
+      activePointer = null;
+      strokes = [];
+      message = saved || pick();
+      revealed = Boolean(saved);
+      canvas.hidden = revealed || !ctx;
+      text.textContent = `“${message}”`;
+      if (revealed) text.removeAttribute("aria-hidden");
+      else text.setAttribute("aria-hidden", "true");
+      button.textContent = revealed ? "Reveal another affirmation" : "Reveal without scratching";
+      requestAnimationFrame(paint);
+    },
+  };
+}
+
 function revealAffirmation() {
-  const entries = loadAllEntries();
-  const iso = toISODate(selectedDate);
-  const entry = getEntry(entries, iso);
-
-  const pick = MORNING_AFFIRMATIONS[Math.floor(Math.random() * MORNING_AFFIRMATIONS.length)];
-  entry.affirmation = pick;
-  entry.updatedAt = Date.now();
-  saveAllEntries(entries);
-
-  els.affirmationText.textContent = `“${entry.affirmation}”`;
-  setSaveStatus("Nice! Your affirmation is ready.");
+  scratchTickets.morning.reveal();
 }
 
 function revealNightAffirmation() {
-  const entries = loadAllEntries();
-  const iso = toISODate(selectedDate);
-  const entry = getEntry(entries, iso);
-
-  const pick = NIGHT_AFFIRMATIONS[Math.floor(Math.random() * NIGHT_AFFIRMATIONS.length)];
-  entry.nightAffirmation = pick;
-  entry.updatedAt = Date.now();
-  saveAllEntries(entries);
-
-  els.nightAffirmationText.textContent = `"${entry.nightAffirmation}"`;
-  setSaveStatus("Nice! Tonight's affirmation is ready.");
+  scratchTickets.night.reveal();
 }
 
 function saveCraftImage(dataUrl) {
@@ -1105,6 +1232,8 @@ function init() {
   viewYear = today.getFullYear();
   viewMonthIndex = today.getMonth();
   selectedDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  scratchTickets.morning = createScratchTicket(document.getElementById("morningScratch"), els.affirmationText, els.revealAffirmationBtn, "affirmation", MORNING_AFFIRMATIONS);
+  scratchTickets.night = createScratchTicket(document.getElementById("nightScratch"), els.nightAffirmationText, els.revealNightAffirmationBtn, "nightAffirmation", NIGHT_AFFIRMATIONS);
   wireEvents();
   initTheme();
   initSound();

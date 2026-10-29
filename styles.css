@@ -735,7 +735,125 @@ body[data-theme="moon"] .calendarControls .iconBtn {
 }
 
 body[data-theme="notebook"] .pageDoodles {
-  opacity: 1;
+  display: none;
+}
+
+.notebookNotes {
+  display: none;
+}
+
+/* A continuous sheet keeps the punched edge on the left as the pages flip. */
+body[data-theme="notebook"] .pageCard {
+  --notebook-margin: 48px;
+  padding-left: calc(var(--notebook-margin) + 10px);
+  border-radius: 6px;
+  background:
+    linear-gradient(90deg,
+      transparent var(--notebook-margin),
+      #dc7c89 var(--notebook-margin),
+      #dc7c89 calc(var(--notebook-margin) + 2px),
+      transparent calc(var(--notebook-margin) + 2px)),
+    repeating-linear-gradient(180deg,
+      transparent 0 27px,
+      #d4e2f2 27px 28px),
+    #fffef9;
+}
+
+body[data-theme="notebook"] .pageCard::before {
+  width: 36px;
+  background:
+    radial-gradient(circle at 18px 16px,
+      #d6d9df 0 6px,
+      #aeb6c1 6px 7px,
+      #ffffff 7px 9px,
+      transparent 9.5px) 0 40px / 36px 180px repeat-y,
+    linear-gradient(90deg, rgba(33, 49, 74, 0.06), transparent);
+}
+
+body[data-theme="notebook"] .pageFace {
+  background: transparent;
+  padding: 12px 12px 24px;
+  min-width: 0;
+}
+
+body[data-theme="notebook"] .pageFace textarea {
+  color: var(--ink);
+  line-height: 28px;
+  border-color: #b9cbe0;
+  border-radius: 5px;
+  padding: 5px 10px;
+  background:
+    repeating-linear-gradient(180deg,
+      transparent 0 27px,
+      #d4e2f2 27px 28px) 0 0 / 100% 28px,
+    #fffef9;
+}
+
+body[data-theme="notebook"] .notebookNotes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 18px;
+  padding: 18px 24px 8px 14px;
+  color: #546798;
+  font-family: "Comic Sans MS", "Marker Felt", cursive;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+body[data-theme="notebook"] .notebookNotes--bottom {
+  padding-top: 0;
+  padding-bottom: 22px;
+  color: #687b58;
+}
+
+/* Stack photo/craft controls before the paper's writing area becomes narrow. */
+@media (min-width: 921px) and (max-width: 1100px) {
+  body[data-theme="notebook"] .pictureOfDayRow,
+  body[data-theme="notebook"] .craftRow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  body[data-theme="notebook"] .pageCard {
+    --notebook-margin: 30px;
+    padding-left: 38px;
+  }
+
+  body[data-theme="notebook"] .pageCard::before {
+    width: 26px;
+    background-size: 26px 150px, auto;
+    background-position: -4px 40px, 0 0;
+  }
+
+  body[data-theme="notebook"] .pageViewport {
+    padding: 12px 10px 16px 0;
+  }
+
+  body[data-theme="notebook"] .pageFace {
+    padding: 12px 4px 18px;
+  }
+
+  body[data-theme="notebook"] .pageTabs,
+  body[data-theme="notebook"] .stickerBar {
+    flex-wrap: wrap;
+    padding-left: 4px;
+    padding-right: 10px;
+  }
+
+  body[data-theme="notebook"] .notebookNotes {
+    padding-left: 4px;
+    padding-right: 12px;
+    font-size: 14px;
+  }
+
+  body[data-theme="notebook"] .field,
+  body[data-theme="notebook"] .craftControls,
+  body[data-theme="notebook"] .pictureOfDayControls {
+    min-width: 0;
+  }
 }
 
 .tab {
@@ -1231,3 +1349,42 @@ textarea {
   background: rgba(255, 255, 255, 0.95);
 }
 
+
+/* Only the ticket captures touch gestures; the rest of the page scrolls normally. */
+.scratchHint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.scratchCard {
+  position: relative;
+  min-height: 154px;
+  border: 2px dashed #a6a4c4;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff7df;
+}
+.scratchCard .affirmationText {
+  min-height: 154px;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+  color: #37405b;
+  font-size: 19px;
+  line-height: 1.5;
+  border: 0;
+}
+.scratchCover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: crosshair;
+}
+.scratchCover[hidden] {
+  display: none;
+}
