@@ -164,14 +164,30 @@ function formatLongDate(d) {
   return `${weekday}, ${month} ${d.getDate()}, ${d.getFullYear()}`;
 }
 
-/** Approximate moon phase from date (0–7). Reference new moon Jan 6, 2000. */
+/** Calendar phase: principal phases on their local date, intervening phases otherwise.
+ * Meeus event times are terrestrial time; subtract approximate delta-T to get UTC.
+ * This is a daily calendar display, not a minute-precision observing ephemeris.
+ */
 function getMoonPhase(date) {
-  const LUNAR_DAYS = 29.530588;
-  const epoch = new Date(2000, 0, 6);
-  const daysSince = (date.getTime() - epoch.getTime()) / 864e5;
-  const cycle = ((daysSince % LUNAR_DAYS) + LUNAR_DAYS) % LUNAR_DAYS;
-  const index = Math.floor((cycle / LUNAR_DAYS) * 8) % 8;
-  return MOON_PHASES[index];
+  const start = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const end = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
+  const year = date.getFullYear() + (date.getMonth() + 0.5) / 12;
+  const t = year - 2000;
+  const deltaT = 62.92 + 0.32217 * t + 0.005589 * t * t;
+  const events = [];
+  const calculators = [lunarPhases.newMoon, lunarPhases.first, lunarPhases.full, lunarPhases.last];
+  // Adjacent lunations cover month/year boundaries, including DST changes.
+  for (let offset = -2; offset <= 2; offset++) {
+    calculators.forEach((calculate, quarter) => {
+      const time = (calculate(year + offset / 12.3685) - 2440587.5) * 864e5 - deltaT * 1000;
+      events.push({ time, index: quarter * 2 });
+    });
+  }
+  events.sort((a, b) => a.time - b.time);
+  const today = events.find(event => event.time >= start.getTime() && event.time < end.getTime());
+  if (today) return MOON_PHASES[today.index];
+  const previous = events.filter(event => event.time < start.getTime()).pop();
+  return MOON_PHASES[(previous.index + 1) % 8];
 }
 
 function loadAllEntries() {
