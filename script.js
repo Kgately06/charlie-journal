@@ -528,10 +528,10 @@ function setCursor(type) {
   let cursorPath = "";
 
   if (type === "heart") {
-    cursorPath = "url('cursors/heart.png'), auto";
+    cursorPath = getSvgCursor('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path fill="hotpink" stroke="crimson" d="M12 21 3 12C-3 4 7-1 12 6c5-7 15-2 9 6z"/></svg>');
     trailType = "heart";
   } else if (type === "star") {
-    cursorPath = "url('cursors/star.png'), auto";
+    cursorPath = getSvgCursor('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path fill="gold" stroke="orange" d="m12 1 3 7 8 1-6 6 2 8-7-4-7 4 2-8-6-6 8-1z"/></svg>');
     trailType = "star";
   } else if (type === "butterfly") {
     cursorPath = getSvgCursor(CURSOR_SVG.butterfly);
@@ -558,7 +558,11 @@ function setCursor(type) {
     trailType = "star";
   }
 
-  document.body.style.cursor = cursorPath;
+  document.documentElement.style.setProperty("--journal-cursor", cursorPath);
+  document.documentElement.classList.add("customCursor");
+  for (const button of document.querySelectorAll(".cursorButtons button")) {
+    button.setAttribute("aria-pressed", String(button.getAttribute("onclick") === "setCursor('" + type + "')"));
+  }
 
   try {
     localStorage.setItem("cursorChoice", type);
@@ -579,7 +583,7 @@ function initCursor() {
   }
 }
 
-document.addEventListener("mousemove", (e) => {
+function showCursorTrail(e) {
   const now = performance.now();
   if (now - lastTrailTime > 90) {
     lastTrailTime = now;
@@ -609,7 +613,9 @@ document.addEventListener("mousemove", (e) => {
       trail.remove();
     }, 250);
   }
-});
+}
+document.addEventListener("pointermove", showCursorTrail);
+document.addEventListener("pointerdown", showCursorTrail);
 
 function syncFlipMinHeight() {
   const frontH = els.morningPage.scrollHeight;
