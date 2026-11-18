@@ -62,8 +62,13 @@ body[data-theme="pinks"] {
 }
 
 body[data-theme="cozy"] {
-  --bg0: #eadff4;
-  --bg1: #f8effb;
+  background-color: #ead5f4;
+  background-image: linear-gradient(to bottom,
+    #f3d4ea 0%, #f4dedd 16%, #f1e8d4 34%, #d6e9e4 52%,
+    #c7e8ee 67%, #d8def3 84%, #ead5f4 100%);
+  background-size: 100% 100vh;
+  background-size: 100% 100svh;
+  background-repeat: no-repeat;
   --ink: #413348;
   --muted: #65546a;
   --paper: #fff0f2;
