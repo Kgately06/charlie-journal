@@ -105,12 +105,9 @@ const els = {
   soundToggleBtn: document.getElementById("soundToggleBtn"),
   celebrationOverlay: document.getElementById("celebrationOverlay"),
   moonPhaseWidget: document.getElementById("moonPhaseWidget"),
-  moonPhaseCard: document.getElementById("moonPhaseCard"),
   moonPhaseIconEl: document.getElementById("moonPhaseIconEl"),
   moonPhaseLabelEl: document.getElementById("moonPhaseLabelEl"),
   moonPhaseSpecialEl: document.getElementById("moonPhaseSpecialEl"),
-  moonPhaseCardTitle: document.getElementById("moonPhaseCardTitle"),
-  moonPhaseCardSpecial: document.getElementById("moonPhaseCardSpecial"),
   moonThemeScene: document.getElementById("moonThemeScene"),
   moonThemeMoon: document.getElementById("moonThemeMoon"),
   weatherBtn: document.getElementById("weatherBtn"),
@@ -347,14 +344,6 @@ function updateMoonPhaseUI() {
 
   if (els.moonThemeScene) els.moonThemeScene.hidden = !isMoonTheme;
   if (els.moonThemeMoon) els.moonThemeMoon.textContent = isMoonTheme ? phase.emoji : "";
-
-  if (els.moonPhaseCard) {
-    els.moonPhaseCard.hidden = !isMoonTheme;
-    if (isMoonTheme) {
-      if (els.moonPhaseCardTitle) els.moonPhaseCardTitle.textContent = phase.label;
-      if (els.moonPhaseCardSpecial) els.moonPhaseCardSpecial.textContent = phase.special;
-    }
-  }
 
   if (els.moonPhaseWidget) {
     els.moonPhaseWidget.hidden = false;
