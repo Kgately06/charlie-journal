@@ -370,7 +370,7 @@ function getWhatToWear(tempF, weatherCode) {
   if (isFog) return "A light jacket is good — it can feel chilly in the fog.";
   if (tempF >= 80) return "Shorts and a T-shirt! Maybe a hat and sunscreen.";
   if (tempF >= 65) return "T-shirt and comfy pants or shorts. Maybe a light layer for morning.";
-  if (tempF >= 50) return "Sweater or light jacket weather. Layers are your friend!";
+  if (tempF >= 50) return "Sweater or light jacket weather.\nLayers are your friend!";
   if (tempF >= 32) return "Warm coat, hat, and maybe gloves. Bundle up!";
   return "Super cold! Big coat, hat, scarf, and mittens. Stay cozy!";
 }
@@ -608,27 +608,6 @@ document.addEventListener("mousedown", (e) => {
   draggingSticker.style.cursor = "grabbing";
   e.preventDefault();
 
-  // #region agent log
-  fetch("http://127.0.0.1:7895/ingest/a6a0cf55-e5d0-4356-a5d4-7bf1882a3825", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-Debug-Session-Id": "6e231f",
-    },
-    body: JSON.stringify({
-      sessionId: "6e231f",
-      runId: "run1",
-      hypothesisId: "H-drag-start",
-      location: "script.js:mousedown",
-      message: "Sticker drag start",
-      data: {
-        x: e.clientX,
-        y: e.clientY,
-      },
-      timestamp: Date.now(),
-    }),
-  }).catch(() => {});
-  // #endregion agent log
 });
 
 document.addEventListener("mousemove", (e) => {
@@ -671,35 +650,6 @@ document.addEventListener("mousemove", (e) => {
     draggingSticker.style.left = `${x}px`;
     draggingSticker.style.top = `${y}px`;
 
-    // #region agent log
-    fetch("http://127.0.0.1:7895/ingest/a6a0cf55-e5d0-4356-a5d4-7bf1882a3825", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Debug-Session-Id": "6e231f",
-      },
-      body: JSON.stringify({
-        sessionId: "6e231f",
-        runId: "run1",
-        hypothesisId: "H-drag-move",
-        location: "script.js:mousemove",
-        message: "Sticker drag move",
-        data: {
-          x: e.clientX,
-          y: e.clientY,
-          left: draggingSticker.style.left,
-          top: draggingSticker.style.top,
-          hostRect: {
-            left: rect.left,
-            top: rect.top,
-            right: rect.right,
-            bottom: rect.bottom,
-          },
-        },
-        timestamp: Date.now(),
-      }),
-    }).catch(() => {});
-    // #endregion agent log
   }
 });
 
@@ -1320,6 +1270,8 @@ function init() {
   scratchTickets.morning = createScratchTicket(document.getElementById("morningScratch"), els.affirmationText, els.revealAffirmationBtn, "affirmation", MORNING_AFFIRMATIONS);
   scratchTickets.night = createScratchTicket(document.getElementById("nightScratch"), els.nightAffirmationText, els.revealNightAffirmationBtn, "nightAffirmation", NIGHT_AFFIRMATIONS);
   wireEvents();
+  showWeatherCard(true);
+  getWeatherAndShow();
   initTheme();
   initSound();
   initCursor();
