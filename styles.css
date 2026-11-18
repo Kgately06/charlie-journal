@@ -58,7 +58,22 @@ body[data-theme="pinks"] {
 }
 
 body[data-theme="cozy"] {
-  /* same as default; kept for clarity */
+  --bg0: #eadff4;
+  --bg1: #f8effb;
+  --ink: #413348;
+  --muted: #65546a;
+  --paper: #fff0f2;
+  --binder: rgba(157, 113, 158, 0.22);
+  --accent: #785a89;
+  --accent2: #f0bba8;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 14px, rgba(166, 131, 191, 0.15) 14px 28px),
+    repeating-linear-gradient(90deg, transparent 0 14px, rgba(166, 131, 191, 0.15) 14px 28px),
+    var(--bg1);
+}
+
+body[data-theme="cozy"] .calendarCard {
+  background: #def1e5;
 }
 
 body[data-theme="notebook"] {
