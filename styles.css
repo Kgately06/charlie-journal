@@ -1326,8 +1326,8 @@ body[data-theme="notebook"] .scratchCard .affirmationText {
 
 .weatherLayout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) min(44%, 180px);
-  min-height: 168px;
+  grid-template-columns: minmax(0, 1fr) min(47.5%, 194px);
+  min-height: 182px;
   align-items: center;
   gap: 10px;
 }
