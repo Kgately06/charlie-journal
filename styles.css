@@ -1420,3 +1420,7 @@ body[data-theme="sparkle"] .pageCard {
   0%, 65%, 93%, 100% { opacity: 0; }
   79% { opacity: .72; }
 }
+
+.customCursor, .customCursor body, .customCursor body :where(*) { cursor: var(--journal-cursor); }
+.customCursor body :is(button, a, select, label) { cursor: var(--journal-cursor); }
+.cursorButtons button[aria-pressed="true"] { outline: 2px solid currentColor; outline-offset: 2px; }
