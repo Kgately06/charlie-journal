@@ -48,13 +48,17 @@ body[data-theme="rainbow"] {
 
 body[data-theme="pinks"] {
   --bg0: #ffc6f2;
-  --bg1: #ffdaf9;
+  --bg1: #ffcce2;
   --ink: #3b1038;
   --muted: rgba(59, 16, 56, 0.78);
   --paper: #ffe6f7;
   --binder: rgba(222, 86, 189, 0.75);
   --accent: #ff4ab8;
   --accent2: #ff74d0;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 14px, rgba(147, 91, 189, 0.30) 14px 28px),
+    repeating-linear-gradient(90deg, transparent 0 14px, rgba(147, 91, 189, 0.30) 14px 28px),
+    var(--bg1);
 }
 
 body[data-theme="cozy"] {
@@ -66,10 +70,6 @@ body[data-theme="cozy"] {
   --binder: rgba(157, 113, 158, 0.22);
   --accent: #785a89;
   --accent2: #f0bba8;
-  background:
-    repeating-linear-gradient(0deg, transparent 0 14px, rgba(166, 131, 191, 0.15) 14px 28px),
-    repeating-linear-gradient(90deg, transparent 0 14px, rgba(166, 131, 191, 0.15) 14px 28px),
-    var(--bg1);
 }
 
 body[data-theme="cozy"] .calendarCard {
