@@ -127,7 +127,6 @@ let currentPictureOfDayDataUrl = "";
 let soundOn = true;
 let audioCtx = null;
 let trailType = "star";
-let draggingSticker = null;
 let lastTrailTime = 0;
 
 function pad2(n) {
@@ -580,36 +579,6 @@ function initCursor() {
   }
 }
 
-function getStickerHost() {
-  // Prefer the currently visible page face (morning or night)
-  const visibleFace = document.querySelector(".pageFace[aria-hidden='false']");
-  return visibleFace || document.querySelector(".pageCard") || document.body;
-}
-
-function addSticker(symbol) {
-  const host = getStickerHost();
-  const rect = host.getBoundingClientRect();
-  const x = rect.left + 80 + Math.random() * Math.max(40, rect.width - 160);
-  const y = rect.top + 120 + Math.random() * Math.max(80, rect.height - 240);
-
-  const el = document.createElement("div");
-  el.className = "sticker";
-  el.textContent = symbol;
-  el.style.left = `${x}px`;
-  el.style.top = `${y}px`;
-
-  host.appendChild(el);
-}
-
-document.addEventListener("mousedown", (e) => {
-  if (!(e.target instanceof HTMLElement)) return;
-  if (!e.target.classList.contains("sticker")) return;
-  draggingSticker = e.target;
-  draggingSticker.style.cursor = "grabbing";
-  e.preventDefault();
-
-});
-
 document.addEventListener("mousemove", (e) => {
   const now = performance.now();
   if (now - lastTrailTime > 90) {
@@ -640,24 +609,6 @@ document.addEventListener("mousemove", (e) => {
       trail.remove();
     }, 250);
   }
-
-  if (draggingSticker) {
-    const host = getStickerHost();
-    const rect = host.getBoundingClientRect();
-    const margin = 20;
-    let x = Math.max(rect.left + margin, Math.min(rect.right - margin, e.clientX));
-    let y = Math.max(rect.top + margin, Math.min(rect.bottom - margin, e.clientY));
-    draggingSticker.style.left = `${x}px`;
-    draggingSticker.style.top = `${y}px`;
-
-  }
-});
-
-document.addEventListener("mouseup", () => {
-  if (draggingSticker) {
-    draggingSticker.style.cursor = "grab";
-  }
-  draggingSticker = null;
 });
 
 function syncFlipMinHeight() {
@@ -1252,14 +1203,6 @@ function wireEvents() {
       toggleWeatherCard();
     });
   }
-
-  const stickerButtons = document.querySelectorAll(".stickerBtn");
-  stickerButtons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const symbol = btn.dataset.sticker || "⭐";
-      addSticker(symbol);
-    });
-  });
 }
 
 function init() {

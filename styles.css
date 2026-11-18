@@ -615,56 +615,6 @@ body[data-theme="moon"] .calendarControls .iconBtn {
   pointer-events: none;
 }
 
-.stickerBar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 14px 0;
-  font-size: 12px;
-}
-
-.stickerLabel {
-  font-weight: 800;
-  color: var(--muted);
-}
-
-.stickerButtons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.stickerBtn {
-  border-radius: 999px;
-  padding: 4px 8px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  background: rgba(255, 255, 255, 0.85);
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.sticker {
-  position: absolute;
-  font-size: 90px;
-  pointer-events: auto;
-  user-select: none;
-  transform: translate(-50%, -50%) scale(1.1) rotate(0deg);
-  animation: stickerPop 260ms ease-out;
-  cursor: grab;
-  z-index: 80;
-}
-
-@keyframes stickerPop {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.2) rotate(-10deg);
-  }
-  100% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1) rotate(4deg);
-  }
-}
-
 .pageTabs {
   display: flex;
   gap: 10px;
@@ -808,8 +758,7 @@ body[data-theme="notebook"] .notebookNotes--bottom {
     padding: 12px 4px 18px;
   }
 
-  body[data-theme="notebook"] .pageTabs,
-  body[data-theme="notebook"] .stickerBar {
+  body[data-theme="notebook"] .pageTabs {
     flex-wrap: wrap;
     padding-left: 4px;
     padding-right: 10px;
