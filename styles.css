@@ -766,10 +766,16 @@ body[data-theme="notebook"] .notebookNotes--bottom {
   }
 }
 
+body[data-theme="moon"] .pageTabs {
+  --tab-paper: #fff1c6;
+  --tab-selected: #ffd16b;
+  --tab-ink: #202442;
+}
+
 .tab {
   border: 1px solid rgba(0, 0, 0, 0.12);
-  background: rgba(255, 255, 255, 0.8);
-  color: var(--ink);
+  background: var(--tab-paper, #fffafd);
+  color: var(--tab-ink, var(--ink));
   border-radius: 14px;
   padding: 10px 12px;
   cursor: pointer;
@@ -803,8 +809,9 @@ body[data-theme="notebook"] .notebookNotes--bottom {
 }
 
 .tab.isActive {
-  border-color: rgba(91, 124, 255, 0.65);
-  box-shadow: 0 0 0 3px rgba(91, 124, 255, 0.18);
+  background: var(--tab-selected, #f1e5fa);
+  border-color: currentColor;
+  box-shadow: inset 0 -3px currentColor;
 }
 
 .pageViewport {
@@ -1326,8 +1333,8 @@ body[data-theme="notebook"] .scratchCard .affirmationText {
 
 .weatherLayout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) min(47.5%, 194px);
-  min-height: 182px;
+  grid-template-columns: minmax(0, 1fr) min(49%, 202px);
+  min-height: 192px;
   align-items: center;
   gap: 10px;
 }
@@ -1335,6 +1342,7 @@ body[data-theme="notebook"] .scratchCard .affirmationText {
   padding-block: 8px;
 }
 .weatherJudy {
+  padding-top: 4px;
   display: block;
   align-self: stretch;
   width: 100%;
