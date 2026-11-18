@@ -267,66 +267,39 @@ body[data-theme="moon"] .moonPhaseWidget {
 }
 
 .themeLabel {
-  font-size: 12px;
+  flex-basis: 100%;
+  font-size: 1rem;
   font-weight: 800;
-  color: var(--muted);
 }
 
 .themeButtons {
+  flex: 1 0 100%;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
 
 .themeBtn {
-  border-radius: 999px;
-  padding: 6px 10px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  background: rgba(255, 255, 255, 0.7);
-  font-size: 12px;
-  font-weight: 700;
+  flex: 1 1 8.5rem;
+  min-height: 48px;
+  border-radius: 14px;
+  padding: 9px 12px;
+  border: 2px solid #cdc5d6;
+  background: #fffafc;
+  color: #332644;
+  font: 700 1rem/1.2 system-ui, sans-serif;
   cursor: pointer;
 }
 
 .themeBtn.isActive {
-  border-color: rgba(91, 124, 255, 0.7);
-  box-shadow: 0 0 0 2px rgba(91, 124, 255, 0.18);
-  background: rgba(91, 124, 255, 0.08);
+  border-color: #48335f;
+  background: #48335f;
+  color: white;
 }
 
-.themeRow {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-}
-
-.themeLabel {
-  font-size: 12px;
-  font-weight: 800;
-  color: var(--muted);
-}
-
-.themeButtons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.themeBtn {
-  border-radius: 999px;
-  padding: 6px 10px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  background: rgba(255, 255, 255, 0.7);
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.themeBtn.isActive {
-  border-color: rgba(91, 124, 255, 0.7);
-  box-shadow: 0 0 0 2px rgba(91, 124, 255, 0.18);
-  background: rgba(91, 124, 255, 0.08);
+.themeBtn:focus-visible {
+  outline: 3px solid #2766c3;
+  outline-offset: 2px;
 }
 
 .statusRow {
