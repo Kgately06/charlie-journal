@@ -729,10 +729,10 @@ function loadEntryIntoForm() {
     if (!section.hidden) featuredCraft = section;
   }
   const isNote = featuredCraft?.hasAttribute("data-note");
-  document.getElementById("craftWritingLabel").textContent = isNote ? "My thank-you note" : "Description";
+  document.getElementById("craftWritingLabel").textContent = isNote ? "My thank-you note" : "What was your favorite part of this craft?";
   els.craftDescription.placeholder = isNote
     ? "Dear ___, thank you for ___. I still remember when ___. Love, ___"
-    : "What did you make?";
+    : "My favorite part was…";
   if (featuredCraft) {
     els.craftOfWeekImage.src = featuredCraft.dataset.example;
     els.craftOfWeekImage.alt = featuredCraft.dataset.alt;
