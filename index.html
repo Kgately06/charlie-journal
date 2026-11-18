@@ -193,8 +193,13 @@
 
                 <div class="divider"></div>
 
-                <h2 class="sectionTitle">🎨 Craft of the Week</h2>
-                <section data-craft-week="2026-11-15" hidden>
+                <h2 class="sectionTitle">This week’s craft is…</h2>
+                <div class="craftRow">
+                  <div class="craftFrame">
+                    <img id="craftOfWeekImage" class="craftOfWeekImage" alt="" />
+                  </div>
+                  <div>
+                <section data-craft-week="2026-11-15" data-example="assets/hand-turkey.webp" data-alt="A traced hand turkey with colorful finger feathers" hidden>
                   <h3>My hand turkey</h3>
                   <p>Grab paper, a pencil and crayons.</p>
                   <ol>
@@ -204,7 +209,7 @@
                   </ol>
                   <p><a href="https://www.crayola.com/crafts/handprint-turkey-art-craft" target="_blank" rel="noopener noreferrer">See Crayola’s handprint turkey craft</a></p>
                 </section>
-                <section data-craft-week="2026-11-22" data-note hidden>
+                <section data-craft-week="2026-11-22" data-example="assets/thank-you-note.webp" data-alt="A handmade thank-you note with a drawing of two people holding hands" data-note hidden>
                   <h3>A thank-you note for someone I love</h3>
                   <p>Pick anyone you love. Grab a piece of paper and your favorite crayons.</p>
                   <ol>
@@ -214,13 +219,14 @@
                   </ol>
                   <p><a href="https://www.youtube.com/watch?v=ItPFaK6po5w" target="_blank" rel="noopener noreferrer">Make a thank-you card with Khan Academy Kids</a></p>
                 </section>
+                  </div>
+                </div>
                 <label class="field craftDesc">
                   <span class="labelText" id="craftWritingLabel">Description</span>
                   <textarea id="craftDescription" rows="5" placeholder="This week’s craft is…"></textarea>
                 </label>
                 <div class="craftRow">
-                  <div class="craftFrame" aria-label="Craft image">
-                    <img id="craftOfWeekImage" class="craftOfWeekImage" alt="" />
+                  <div class="craftFrame" aria-label="My finished craft">
                     <img id="craftImagePreview" class="craftImage" alt="My finished craft" />
                     <div id="craftHint" class="craftHint">My finished craft</div>
                   </div>

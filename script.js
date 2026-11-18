@@ -732,9 +732,10 @@ function loadEntryIntoForm() {
   document.getElementById("craftWritingLabel").textContent = isNote ? "My thank-you note" : "Description";
   els.craftDescription.placeholder = isNote
     ? "Dear ___, thank you for ___. I still remember when ___. Love, ___"
-    : "This week’s craft is…";
+    : "What did you make?";
   if (featuredCraft) {
-    els.craftOfWeekImage.removeAttribute("src");
+    els.craftOfWeekImage.src = featuredCraft.dataset.example;
+    els.craftOfWeekImage.alt = featuredCraft.dataset.alt;
   } else {
     const craft = CRAFT_OF_THE_WEEK_IMAGES[getCraftOfWeekIndex(selectedDate)];
     els.craftOfWeekImage.src = craft.url;
@@ -756,7 +757,6 @@ function renderCraftImage(dataUrl) {
   const hasImage = Boolean(dataUrl);
   els.craftImagePreview.src = hasImage ? dataUrl : "";
   els.craftImagePreview.style.display = hasImage ? "block" : "none";
-  els.craftOfWeekImage.style.display = hasImage || !els.craftOfWeekImage.hasAttribute("src") ? "none" : "block";
   els.craftHint.style.display = hasImage ? "none" : "block";
   els.craftImagePreview.closest(".craftFrame")?.classList.toggle("hasImage", hasImage);
   els.removeCraftImageBtn.disabled = !hasImage;

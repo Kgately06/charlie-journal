@@ -986,7 +986,8 @@ textarea {
   display: grid;
   place-items: center;
   padding: 14px;
-  min-height: 280px;
+  height: 280px;
+  box-sizing: border-box;
   position: relative;
   overflow: hidden;
 }
