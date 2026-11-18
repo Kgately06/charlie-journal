@@ -38,6 +38,9 @@
 }
 .calendarWithArt + .pageCard {grid-column:1/-1}
 @media(max-width:520px){.book > .calendarWithArt {grid-template-columns:minmax(0,2.5fr) minmax(0,1fr)}}
+</style><style>
+.journalControls { flex-basis: 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 96px)); gap: 6px; }
+.journalControls > button { width: 100%; margin: 0; box-sizing: border-box; }
 </style></head>
   <body>
     <div id="moonThemeScene" class="moonThemeScene" aria-hidden="true">
@@ -65,16 +68,16 @@
             <button class="themeBtn" type="button" data-theme="cozy">☁️ Cozy Pastel</button>
             <button class="themeBtn" type="button" data-theme="notebook">📓 Notebook</button>
             <button class="themeBtn" type="button" data-theme="moon">🌙 Moon</button>
-            <div style="display:grid;gap:6px">
-              <button class="themeBtn" type="button" data-theme="sparkle">✨ Sparkle</button>
-              <button class="soundBtn" type="button" aria-controls="musicPanel" aria-expanded="false" id="musicToggle">🎵 Music</button>
-            </div>
+            <button class="themeBtn" type="button" data-theme="sparkle">✨ Sparkle</button>
           </div>
-          <button id="soundToggleBtn" class="soundBtn" type="button">🔊 Sound On</button>
+          <div class="journalControls">
+            <button id="soundToggleBtn" class="soundBtn" type="button">🔊 Sound On</button>
           <button id="weatherBtn" class="weatherBtn" type="button" aria-expanded="false" aria-controls="weatherCard">
             <span class="weatherBtnBg" aria-hidden="true"></span>
             <span class="weatherBtnLabel">☀️ Weather</span>
           </button>
+            <button class="soundBtn" type="button" aria-controls="musicPanel" aria-expanded="false" id="musicToggle">🎵 Music</button>
+          </div>
         </div>
 
         <section id="musicPanel" aria-label="Music playlist" hidden>
