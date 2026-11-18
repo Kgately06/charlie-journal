@@ -722,10 +722,24 @@ function loadEntryIntoForm() {
   currentCraftImageDataUrl = entry.morning.craftImageDataUrl || "";
   currentPictureOfDayDataUrl = entry.morning.pictureOfDayDataUrl || "";
   renderPictureOfDay(currentPictureOfDayDataUrl);
-  const weekIndex = getCraftOfWeekIndex(selectedDate);
-  const craftOfWeek = CRAFT_OF_THE_WEEK_IMAGES[weekIndex];
-  els.craftOfWeekImage.src = craftOfWeek.url;
-  els.craftOfWeekImage.alt = craftOfWeek.alt;
+  const week = toISODate(getWeekSunday(selectedDate));
+  let featuredCraft;
+  for (const section of document.querySelectorAll("[data-craft-week]")) {
+    section.hidden = section.dataset.craftWeek !== week;
+    if (!section.hidden) featuredCraft = section;
+  }
+  const isNote = featuredCraft?.hasAttribute("data-note");
+  document.getElementById("craftWritingLabel").textContent = isNote ? "My thank-you note" : "Description";
+  els.craftDescription.placeholder = isNote
+    ? "Dear ___, thank you for ___. I still remember when ___. Love, ___"
+    : "This week’s craft is…";
+  if (featuredCraft) {
+    els.craftOfWeekImage.removeAttribute("src");
+  } else {
+    const craft = CRAFT_OF_THE_WEEK_IMAGES[getCraftOfWeekIndex(selectedDate)];
+    els.craftOfWeekImage.src = craft.url;
+    els.craftOfWeekImage.alt = craft.alt;
+  }
   renderCraftImage(currentCraftImageDataUrl);
 
   els.gratefulFor.value = entry.night.gratefulFor || "";
@@ -742,7 +756,7 @@ function renderCraftImage(dataUrl) {
   const hasImage = Boolean(dataUrl);
   els.craftImagePreview.src = hasImage ? dataUrl : "";
   els.craftImagePreview.style.display = hasImage ? "block" : "none";
-  els.craftOfWeekImage.style.display = hasImage ? "none" : "block";
+  els.craftOfWeekImage.style.display = hasImage || !els.craftOfWeekImage.hasAttribute("src") ? "none" : "block";
   els.craftHint.style.display = hasImage ? "none" : "block";
   els.craftImagePreview.closest(".craftFrame")?.classList.toggle("hasImage", hasImage);
   els.removeCraftImageBtn.disabled = !hasImage;
