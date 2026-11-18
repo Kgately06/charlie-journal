@@ -35,8 +35,9 @@
 }
 
 body[data-theme="rainbow"] {
-  --bg0: #ffd4ff;
-  --bg1: #fff0c2;
+  background: linear-gradient(90deg,
+    #f2767e 0%, #ffa15d 17%, #f5d452 33%, #63c48a 50%,
+    #58afd9 67%, #8385cf 83%, #ad79cd 100%);
   --ink: #25123b;
   --muted: rgba(37, 18, 59, 0.78);
   --paper: #fff8ff;
