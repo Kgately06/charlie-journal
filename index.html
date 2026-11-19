@@ -39,8 +39,9 @@
 .calendarWithArt + .pageCard {grid-column:1/-1}
 @media(max-width:520px){.book > .calendarWithArt {grid-template-columns:minmax(0,2.5fr) minmax(0,1fr)}}
 </style><style>
-.journalControls { flex-basis: 100%; display: grid; justify-content: center; grid-template-columns: repeat(3, minmax(0, 96px)); gap: 6px; }
+.journalControls { flex-basis: 100%; display: grid; justify-content: center; align-items: center; grid-template-columns: minmax(0, 96px) minmax(0, 136px); gap: 6px; }
 .journalControls > button { width: 100%; margin: 0; box-sizing: border-box; }
+#musicToggle { min-height: 44px; font-size: 1.125rem; }
 </style></head>
   <body>
     <div id="moonThemeScene" class="moonThemeScene" aria-hidden="true">
@@ -89,10 +90,6 @@
 
         <div class="journalControls">
           <button id="soundToggleBtn" class="soundBtn" type="button">🔊 Sound On</button>
-        <button id="weatherBtn" class="weatherBtn" type="button" aria-expanded="false" aria-controls="weatherCard">
-          <span class="weatherBtnBg" aria-hidden="true"></span>
-          <span class="weatherBtnLabel">☀️ Weather</span>
-        </button>
           <button class="soundBtn" type="button" aria-controls="musicPanel" aria-expanded="false" id="musicToggle">🎵 Music</button>
         </div>
 
@@ -109,7 +106,7 @@
             referrerpolicy="strict-origin-when-cross-origin"
             allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
         </section>
-        <div id="weatherCard" class="weatherCard" role="region" aria-label="Weather and what to wear" hidden>
+        <div id="weatherCard" class="weatherCard" role="region" aria-label="Weather and what to wear">
           <div class="weatherLayout">
           <div class="weatherCardInner">
             <p id="weatherLocation" class="weatherLocation"></p>
