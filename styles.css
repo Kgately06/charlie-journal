@@ -223,6 +223,7 @@ body[data-theme="moon"] .moonPhaseWidget {
 
 .moonPhaseWidgetSpecial {
   margin: 0;
+  font-weight: 700;
   font-size: 1rem;
   line-height: 1.4;
   color: var(--muted);
