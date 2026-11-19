@@ -39,7 +39,7 @@
 .calendarWithArt + .pageCard {grid-column:1/-1}
 @media(max-width:520px){.book > .calendarWithArt {grid-template-columns:minmax(0,2.5fr) minmax(0,1fr)}}
 </style><style>
-.journalControls { flex-basis: 100%; display: grid; justify-content: center; align-items: center; grid-template-columns: minmax(0, 96px) minmax(0, 136px); gap: 6px; }
+.journalControls { flex-basis: 100%; display: grid; justify-content: center; align-items: center; grid-template-columns: minmax(0, 136px); gap: 6px; }
 .journalControls > button { width: 100%; margin: 0; box-sizing: border-box; }
 #musicToggle { min-height: 44px; font-size: 1.125rem; }
 </style></head>
@@ -89,7 +89,6 @@
         </div>
 
         <div class="journalControls">
-          <button id="soundToggleBtn" class="soundBtn" type="button">🔊 Sound On</button>
           <button class="soundBtn" type="button" aria-controls="musicPanel" aria-expanded="false" id="musicToggle">🎵 Music</button>
         </div>
 
