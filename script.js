@@ -321,9 +321,48 @@ function setSectionDisabled(sectionEl, disabled) {
   });
 }
 
+const notebookMessages = Array.from(document.querySelectorAll(".notebookNotes span"), note => note.textContent);
+const marginMessages = {
+  notebook: notebookMessages,
+  rainbow: [
+    "🌈 You’ve got this!", "What will you dream up?",
+    "Keep up the good work!", "One little step counts.",
+    "💛 Keep being you!", "Your feelings belong here.",
+    "What a colorful day.", "Rest those busy feet!"
+  ],
+  pinks: [
+    "💜 Your ideas matter.", "Be your own kind of wonderful.",
+    "Draw it your way!", "A little kindness goes far.",
+    "You can tell your story.", "All feelings are welcome.",
+    "You tried something today.", "Sweet dreams, daydreamer!"
+  ],
+  cozy: [
+    "☁️ Take your time.", "Start with one small thing.",
+    "A doodle is a good start.", "You can ask for help.",
+    "Take a cozy breath.", "You deserve a soft landing.",
+    "Give yourself a hug.", "Tomorrow is a fresh page."
+  ],
+  moon: [
+    "🌙 Stay curious!", "Big questions are welcome.",
+    "Try a little experiment.", "Keep exploring!",
+    "Let your thoughts land here.", "Even little stars shine.",
+    "You can rest now.", "Dream up a new adventure."
+  ],
+  sparkle: [
+    "✨ Let your ideas sparkle!", "Make something only you could make.",
+    "Trying takes courage.", "Look at you go!",
+    "What made you smile?", "Your kind heart shines.",
+    "Be proud of one small thing.", "Sleep tight, bright spark!"
+  ]
+};
+
 function applyTheme(theme) {
   const next = theme || "rainbow";
   document.body.dataset.theme = next;
+  const notes = marginMessages[next] || notebookMessages;
+  document.querySelectorAll(".notebookNotes span").forEach((note, index) => {
+    note.textContent = notes[index];
+  });
   try {
     localStorage.setItem(THEME_STORAGE_KEY, next);
   } catch {
