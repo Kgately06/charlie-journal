@@ -809,10 +809,33 @@ function renderCalendar() {
   }
 }
 
+function renderReadingPrompt(entries, morning) {
+  const grid = els.needToDoToday.closest(".fieldGrid");
+  grid.querySelector("#readingAnswer")?.closest("label").remove();
+  const day = selectedDate.getDay();
+  if (day !== 0 && day !== 3) return;
+  const sunday = new Date(selectedDate);
+  sunday.setDate(sunday.getDate() - day);
+  const title = entries[toISODate(sunday)]?.morning?.readingTitle?.trim();
+  const field = document.createElement("label");
+  field.className = "field";
+  const prompt = document.createElement("span");
+  prompt.className = "labelText";
+  prompt.textContent = day === 0 ? "What book do I want to read this week?"
+    : title ? "How far have I gotten in “" + title + "”?" : "How far have I gotten in my book?";
+  const answer = document.createElement("textarea");
+  answer.id = "readingAnswer";
+  answer.rows = 3;
+  answer.value = (day === 0 ? morning.readingTitle : morning.readingProgress) || "";
+  field.append(prompt, answer);
+  grid.append(field);
+}
+
 function loadEntryIntoForm() {
   const entries = loadAllEntries();
   const entry = getEntry(entries, toISODate(selectedDate));
 
+  renderReadingPrompt(entries, entry.morning);
   els.goalsToday.value = entry.morning.goalsToday || "";
   els.lookingForwardTo.value = entry.morning.lookingForwardTo || "";
   els.needToDoToday.value = entry.morning.needToDoToday || "";
@@ -888,6 +911,8 @@ function saveMorning() {
   const iso = toISODate(selectedDate);
   const entry = getEntry(entries, iso);
 
+  const reading = document.getElementById("readingAnswer");
+  if (reading) entry.morning[selectedDate.getDay() === 0 ? "readingTitle" : "readingProgress"] = reading.value;
   entry.morning.goalsToday = els.goalsToday.value;
   entry.morning.lookingForwardTo = els.lookingForwardTo.value;
   entry.morning.needToDoToday = els.needToDoToday.value;
