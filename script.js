@@ -770,7 +770,8 @@ function loadEntryIntoForm() {
   els.needToDoToday.value = entry.morning.needToDoToday || "";
   els.craftDescription.value = entry.morning.craftDescription || "";
   currentCraftImageDataUrl = entry.morning.craftImageDataUrl || "";
-  currentPictureOfDayDataUrl = entry.morning.pictureOfDayDataUrl || "";
+  const showNovemberPhoto = toISODate(selectedDate) === "2026-11-19" && !entry.morning.pictureOfDayRemoved;
+  currentPictureOfDayDataUrl = entry.morning.pictureOfDayDataUrl || (showNovemberPhoto ? els.pictureOfDayPreview.dataset.novemberPhoto : "") || "";
   renderPictureOfDay(currentPictureOfDayDataUrl);
   const week = toISODate(getWeekSunday(selectedDate));
   let featuredCraft;
@@ -1156,6 +1157,7 @@ function savePictureOfDay(dataUrl) {
   const iso = toISODate(selectedDate);
   const entry = getEntry(entries, iso);
   entry.morning.pictureOfDayDataUrl = dataUrl || "";
+  entry.morning.pictureOfDayRemoved = !dataUrl;
   entry.updatedAt = Date.now();
   saveAllEntries(entries);
   renderSelectedDateHeader();
