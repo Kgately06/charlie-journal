@@ -272,6 +272,7 @@ body[data-theme="moon"] .moonPhaseWidget {
 }
 
 .themeRow {
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -286,13 +287,20 @@ body[data-theme="moon"] .moonPhaseWidget {
 
 .themeButtons {
   flex: 1 0 100%;
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
 }
 
+@media (min-width: 560px) {
+  .themeButtons { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (min-width: 921px) {
+  .themeButtons { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+
 .themeBtn {
-  flex: 1 1 8.5rem;
   min-height: 48px;
   border-radius: 14px;
   padding: 9px 12px;
