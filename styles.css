@@ -1434,6 +1434,10 @@ body[data-theme="sparkle"] .pageCard {
     justify-content: center;
   }
 
+  .journalControls > button {
+    padding-block: 7px;
+  }
+
   .cursorButtons button {
     box-sizing: border-box;
     min-width: 42px;
