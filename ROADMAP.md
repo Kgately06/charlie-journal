@@ -238,3 +238,7 @@ And it teaches the creator:
 - Iteration
 - Ownership
 
+
+## Backlog
+
+- Let each person tap the heart or another picture beside the calendar to replace it. Share their selected pictures across devices.

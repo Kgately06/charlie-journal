@@ -780,9 +780,9 @@ function loadEntryIntoForm() {
     if (!section.hidden) featuredCraft = section;
   }
   const isNote = featuredCraft?.hasAttribute("data-note");
-  document.getElementById("craftWritingLabel").textContent = isNote ? "My thank-you note" : "What was your favorite part of this craft?";
+  document.getElementById("craftWritingLabel").textContent = isNote ? "Inside my Thanksgiving card" : "What was your favorite part of this craft?";
   els.craftDescription.placeholder = isNote
-    ? "Dear ___, thank you for ___. I still remember when ___. Love, ___"
+    ? "I’m thankful for you because…"
     : "My favorite part was…";
   if (featuredCraft) {
     els.craftOfWeekImage.src = featuredCraft.dataset.example;
