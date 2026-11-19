@@ -655,9 +655,6 @@ body[data-theme="notebook"] .pageDoodles {
   display: none;
 }
 
-.notebookNotes {
-  display: none;
-}
 
 /* A continuous sheet keeps the punched edge on the left as the pages flip. */
 body[data-theme="notebook"] .pageCard {
@@ -706,7 +703,7 @@ body[data-theme="notebook"] .pageFace textarea {
     #fffef9;
 }
 
-body[data-theme="notebook"] .notebookNotes {
+.notebookNotes {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -719,10 +716,15 @@ body[data-theme="notebook"] .notebookNotes {
   line-height: 1.5;
 }
 
-body[data-theme="notebook"] .notebookNotes--bottom {
+.notebookNotes--bottom {
   padding-top: 0;
   padding-bottom: 22px;
   color: #687b58;
+}
+
+body:not([data-theme="notebook"]) .notebookNotes {
+  color: var(--ink);
+  font-weight: 600;
 }
 
 /* Stack photo/craft controls before the paper's writing area becomes narrow. */
@@ -759,7 +761,7 @@ body[data-theme="notebook"] .notebookNotes--bottom {
     padding-right: 10px;
   }
 
-  body[data-theme="notebook"] .notebookNotes {
+  .notebookNotes {
     padding-left: 4px;
     padding-right: 12px;
     font-size: 14px;
