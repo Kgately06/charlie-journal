@@ -96,6 +96,7 @@ const els = {
   gratefulFor: document.getElementById("gratefulFor"),
   madeMeHappy: document.getElementById("madeMeHappy"),
   betterTomorrow: document.getElementById("betterTomorrow"),
+  weeklyGoal: document.getElementById("weeklyGoal"),
   madeTodayBetter: document.getElementById("madeTodayBetter"),
 
   saveMorningBtn: document.getElementById("saveMorningBtn"),
@@ -217,6 +218,7 @@ function getEntry(entries, iso) {
         madeMeHappy: "",
         betterTomorrow: "",
         madeTodayBetter: "",
+        weeklyGoal: "",
       },
       affirmation: "",
       nightAffirmation: "",
@@ -755,6 +757,8 @@ function loadEntryIntoForm() {
   els.gratefulFor.value = entry.night.gratefulFor || "";
   els.madeMeHappy.value = entry.night.madeMeHappy || "";
   els.betterTomorrow.value = entry.night.betterTomorrow || "";
+  document.getElementById("weeklyGoalField").hidden = selectedDate.getDay() !== 0;
+  els.weeklyGoal.value = entry.night.weeklyGoal || "";
   els.madeTodayBetter.value = entry.night.madeTodayBetter || "";
 
   scratchTickets.morning.reset(entry.affirmation);
@@ -822,6 +826,7 @@ function saveNight() {
   entry.night.gratefulFor = els.gratefulFor.value;
   entry.night.madeMeHappy = els.madeMeHappy.value;
   entry.night.betterTomorrow = els.betterTomorrow.value;
+  if (selectedDate.getDay() === 0) entry.night.weeklyGoal = els.weeklyGoal.value;
   entry.night.madeTodayBetter = els.madeTodayBetter.value;
   entry.updatedAt = Date.now();
 
