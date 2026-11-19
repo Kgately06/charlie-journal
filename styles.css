@@ -1191,6 +1191,7 @@ textarea {
 
 .weatherWear {
   white-space: pre-line;
+  font-weight: 700;
   font-size: 14px;
   line-height: 1.45;
   color: var(--ink);
