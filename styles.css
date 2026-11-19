@@ -1424,3 +1424,49 @@ body[data-theme="sparkle"] .pageCard {
 .customCursor, .customCursor body, .customCursor body :where(*) { cursor: var(--journal-cursor); }
 .customCursor body :is(button, a, select, label) { cursor: var(--journal-cursor); }
 .cursorButtons button[aria-pressed="true"] { outline: 2px solid currentColor; outline-offset: 2px; }
+
+@media (min-width: 921px) {
+  .header {
+    justify-items: center;
+  }
+
+  .header :is(.themeRow, .statusRow, .cursorButtons) {
+    justify-content: center;
+  }
+
+  .cursor-picker {
+    text-align: center;
+  }
+
+  .weatherCard,
+  .app .book > .calendarWithArt {
+    box-sizing: border-box;
+    width: min(100%, 580px);
+    max-width: none;
+    justify-self: center;
+  }
+
+  .app .book > .calendarWithArt {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
+  }
+
+  .calendarWithArt .calendarCard {
+    max-width: none;
+  }
+
+  .weatherLayout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr) 130px;
+    grid-template-rows: 1fr auto auto auto 1fr;
+    gap: 3px 18px;
+    min-height: 150px;
+  }
+
+  .weatherLayout .weatherCardInner { display: contents; }
+  .weatherLocation { grid-area: 2 / 1; }
+  .weatherTemp { grid-area: 3 / 1; }
+  .weatherCondition { grid-area: 4 / 1; }
+  .weatherWearTitle { grid-area: 2 / 2; margin: 0; }
+  .weatherWear { grid-area: 3 / 2 / 5 / 3; align-self: start; }
+  .weatherError { grid-area: 5 / 1 / 6 / 3; }
+  .weatherJudy { grid-area: 1 / 3 / 6 / 4; }
+}
