@@ -443,7 +443,6 @@ function isRain(code) {
 }
 
 function chooseJudyOutfit(current, tempF, laterRain) {
-  if (current.is_day === 0) return "bedtime";
   const code = current.weather_code;
   if ((code >= 71 && code <= 77) || code === 85 || code === 86) return "winter";
   if (isRain(code) || laterRain) return "rain";
@@ -454,7 +453,10 @@ function chooseJudyOutfit(current, tempF, laterRain) {
   return null;
 }
 
-function showJudyOutfit(key) {
+let morningOutfit = "layers";
+
+function refreshJudyOutfit() {
+  const key = els.nightTab.getAttribute("aria-selected") === "true" ? "bedtime" : morningOutfit;
   const original = els.weatherCard.querySelector("svg.weatherJudy");
   if (!original) return;
   let image = els.weatherCard.querySelector("img.weatherJudy");
@@ -488,7 +490,8 @@ function renderWeather(data, locationLabel) {
   const laterRain = data.hourly?.time?.some((time, i) =>
     time > now && time.slice(0, 10) === now.slice(0, 10) && isRain(data.hourly.weather_code?.[i])
   );
-  showJudyOutfit(chooseJudyOutfit(data.current || {}, tempF, laterRain));
+  morningOutfit = chooseJudyOutfit(data.current || {}, tempF, laterRain);
+  refreshJudyOutfit();
   if (laterRain && !isRain(code)) els.weatherWear.textContent += " Bring a raincoat for later.";
   if (els.weatherError) {
     els.weatherError.hidden = true;
@@ -718,6 +721,7 @@ function setActiveTab(tab) {
   els.nightTab.classList.toggle("isActive", !isMorning);
   els.morningTab.setAttribute("aria-selected", String(isMorning));
   els.nightTab.setAttribute("aria-selected", String(!isMorning));
+  refreshJudyOutfit();
 
   els.pageFlip.classList.toggle("isMorning", isMorning);
   els.pageFlip.classList.toggle("isNight", !isMorning);
