@@ -97,8 +97,12 @@
         </div>
 
         <section id="musicPanel" aria-label="Music playlist" hidden>
+          <label for="musicTracks">Choose a song</label>
+          <select id="musicTracks">
+            <option value="kutumaLYK18">CATastrophe — Hilary Duff</option>
+            <option value="hDU4GB1PTxc">I Knew It, I Knew You — Taylor Swift</option>
+          </select>
           <iframe id="songEmbed" title="Hilary Duff – CATastrophe music video"
-            data-src="https://www.youtube-nocookie.com/embed/kutumaLYK18?playsinline=1"
             style="display: block; width: min(100%, 640px); height: auto; min-height: 200px; aspect-ratio: 16 / 9; border: 0"
             referrerpolicy="strict-origin-when-cross-origin"
             allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
@@ -375,11 +379,17 @@
         const toggle = document.getElementById("musicToggle");
         const panel = document.getElementById("musicPanel");
         const player = document.getElementById("songEmbed");
+        const tracks = document.getElementById("musicTracks");
+        function loadSong() {
+          player.title = tracks.selectedOptions[0].text + " music video";
+          player.src = "https://www.youtube-nocookie.com/embed/" + tracks.value + "?playsinline=1";
+        }
+        tracks.addEventListener("change", loadSong);
         toggle.addEventListener("click", () => {
           panel.hidden = !panel.hidden;
           toggle.setAttribute("aria-expanded", String(!panel.hidden));
           if (panel.hidden) player.removeAttribute("src");
-          else player.src = player.dataset.src;
+          else loadSong();
         });
       })();
     </script>
