@@ -527,7 +527,9 @@ const CURSOR_SVG = {
 function setCursor(type) {
   let cursorPath = "";
 
-  if (type === "heart") {
+  if (type === "regular") {
+    trailType = null;
+  } else if (type === "heart") {
     cursorPath = getSvgCursor('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path fill="hotpink" stroke="crimson" d="M12 21 3 12C-3 4 7-1 12 6c5-7 15-2 9 6z"/></svg>');
     trailType = "heart";
   } else if (type === "star") {
@@ -559,7 +561,7 @@ function setCursor(type) {
   }
 
   document.documentElement.style.setProperty("--journal-cursor", cursorPath);
-  document.documentElement.classList.add("customCursor");
+  document.documentElement.classList.toggle("customCursor", type !== "regular");
   for (const button of document.querySelectorAll(".cursorButtons button")) {
     button.setAttribute("aria-pressed", String(button.getAttribute("onclick") === "setCursor('" + type + "')"));
   }
@@ -584,6 +586,7 @@ function initCursor() {
 }
 
 function showCursorTrail(e) {
+  if (!trailType) return;
   const now = performance.now();
   if (now - lastTrailTime > 90) {
     lastTrailTime = now;
