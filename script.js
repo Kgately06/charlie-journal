@@ -449,7 +449,7 @@ function chooseJudyOutfit(current, tempF, laterRain) {
   if (isRain(code) || laterRain) return "rain";
   if (tempF == null) return null;
   if (tempF < 32) return "winter";
-  if (tempF < 50) return "chilly";
+  if (tempF < 50 || code === 45 || code === 48) return "chilly";
   if (tempF < 65) return "layers";
   return tempF < 71 ? "cardigan" : "tshirt";
 }
@@ -464,7 +464,8 @@ function seasonalJudyOutfit(weather, date = new Date()) {
   if (month >= 3 && month <= 5) return "meadow-breeze";
   if (month >= 9 && month <= 11) {
     if (weather === "cardigan" || weather === "tshirt") return "pumpkin-patch";
-    if (weather === "layers" || weather === "chilly") return "sweater-weather";
+    if (weather === "chilly") return "meadow-breeze";
+    if (weather === "layers") return "sweater-weather";
   }
   return weather;
 }
