@@ -460,10 +460,12 @@ function seasonalJudyOutfit(weather, date = new Date()) {
   const month = date.getMonth() + 1;
   const day = date.getDate();
   if (month === 11 && day >= 22 && day <= 28 && date.getDay() === 4) return "golden-harvest";
-  if (month === 11 && day === 20 && date.getFullYear() === 2026) return "pumpkin-patch";
   if (weather === "rain" || weather === "winter") return weather;
   if (month >= 3 && month <= 5) return "meadow-breeze";
-  if (month >= 9 && month <= 11) return day % 2 ? "sweater-weather" : "pumpkin-patch";
+  if (month >= 9 && month <= 11) {
+    if (weather === "cardigan" || weather === "tshirt") return "pumpkin-patch";
+    if (weather === "layers" || weather === "chilly") return "sweater-weather";
+  }
   return weather;
 }
 
