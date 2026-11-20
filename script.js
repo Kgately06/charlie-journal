@@ -879,8 +879,8 @@ function renderCalendar() {
       if (holidays.has(iso)) items.unshift({kind: "Holiday", title: holidays.get(iso)});
       for (const item of items) {
         const label = document.createElement("span");
-        label.className = "calendarItem";
-        label.textContent = item.title;
+        label.className = "calendarItem calendarItem--" + item.kind.toLowerCase();
+        label.textContent = item.kind + ": " + item.title;
         btn.append(label);
       }
       btn.setAttribute("aria-label", [formatLongDate(d), ...items.map(item => item.kind + ": " + item.title)].join(", "));
