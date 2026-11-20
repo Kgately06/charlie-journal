@@ -774,7 +774,7 @@ function renderCompletionUI(entry) {
 function calendarItemText(item) {
   if (item.kind === "Holiday") return item.title;
   const time = item.time ? new Date("2000-01-01T" + item.time).toLocaleTimeString(undefined, {hour:"numeric", minute:"2-digit"}) + " " : "";
-  return item.kind + ": " + time + item.title;
+  return (item.important ? "★ Important · " : "") + item.kind + ": " + time + item.title;
 }
 
 function renderPlanner(items, iso) {
@@ -807,6 +807,7 @@ function renderPlanner(items, iso) {
       form.elements.itemTitle.value = item.title;
       form.elements.itemDate.value = iso;
       form.elements.itemTime.value = item.time || "";
+      form.elements.important.checked = Boolean(item.important);
       submit.textContent = "Save changes";
       cancel.hidden = false;
       form.elements.itemTitle.focus();
@@ -834,7 +835,7 @@ function renderPlanner(items, iso) {
       if (id && !original) throw new Error("This item has moved or was removed. Cancel this edit and select it again.");
       await changeCalendarItem(original && {...original,date:iso}, {
         id:id || crypto.randomUUID(), title, date, time:form.elements.itemTime.value,
-        kind:form.elements.kind.value
+        important:form.elements.important.checked, kind:form.elements.kind.value
       });
       reset();
       if (date !== iso) selectDate(new Date(date + "T12:00:00"));
@@ -924,6 +925,7 @@ function renderCalendar() {
       const d = new Date(viewYear, viewMonthIndex, dayNum);
       const iso = toISODate(d);
       btn.textContent = String(dayNum);
+      if (itemsForDate(iso).some(item => item.important)) btn.append(" ★");
       const items = [...itemsForDate(iso)];
       if (holidays.has(iso)) items.unshift({kind: "Holiday", title: holidays.get(iso)});
       for (const item of items) {
