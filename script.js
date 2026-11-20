@@ -624,6 +624,19 @@ function getSvgCursor(svgContent) {
 }
 
 const CURSOR_SVG = {
+  turkey: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+    <g stroke="#613520" stroke-width="1">
+      <ellipse cx="21" cy="12" rx="4" ry="10" fill="#d35936"/>
+      <ellipse cx="21" cy="12" rx="4" ry="10" transform="rotate(32 20 20)" fill="#eba844"/>
+      <ellipse cx="21" cy="12" rx="4" ry="10" transform="rotate(65 20 20)" fill="#c86c38"/>
+      <path d="M12 25v4m8-4v4m-11 0h6m2 0h6" stroke="#ca812f"/>
+      <ellipse cx="16" cy="21" rx="9" ry="6" fill="#92512c"/>
+      <path fill="#98552e" d="M8 22 5 12C2 5 13 2 14 9l-1 8z"/>
+      <path fill="#ffc24f" d="m1 9 5-2 1 5z"/>
+    </g>
+    <ellipse cx="7" cy="14" rx="1.8" ry="3" fill="#d73836"/>
+    <circle cx="8" cy="8" r="1.2" fill="#241910"/>
+  </svg>`,
   butterfly:
     '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#ff69b4" d="M12 10c-1 0-2 .5-2.5 1.5L8 14h2l1.5-2 1.5 2h2l-1.5-2.5c-.5-1-1.5-1.5-2.5-1.5z"/><path fill="#ffb6c1" d="M8 14c-2 0-3 1.5-3 3v2h3v-2c0-.5.5-1 1-1h1v-2H8z"/><path fill="#ffb6c1" d="M16 14v2h1c.5 0 1 .5 1 1v2h3v-2c0-1.5-1-3-3-3h-2z"/><path fill="#da70d6" d="M12 8c.5 0 1 .2 1.3.6l.7 1.4.7-1.4c.3-.4.8-.6 1.3-.6s1 .2 1.3.6l.7 1.4.7-1.4c.3-.4.8-.6 1.3-.6v2c-.3 0-.5.1-.7.3l-1 2-1-2c-.2-.2-.4-.3-.7-.3s-.5.1-.7.3l-1 2-1-2c-.2-.2-.4-.3-.6-.3V8z"/></svg>',
   sparkle:
@@ -662,6 +675,9 @@ function setCursor(type) {
   } else if (type === "rainbow") {
     cursorPath = getSvgCursor(CURSOR_SVG.rainbow);
     trailType = "rainbow";
+  } else if (type === "turkey") {
+    cursorPath = getSvgCursor(CURSOR_SVG.turkey).replace(" 0 0, auto", " 1 9, auto");
+    trailType = null;
   } else if (type === "mystery") {
     const options = ["heart", "star", "butterfly", "sparkle", "flower", "crown", "rainbow"];
     const random = options[Math.floor(Math.random() * options.length)];
