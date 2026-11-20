@@ -771,7 +771,48 @@ function renderCompletionUI(entry) {
   }
 }
 
+function renderPlanner(items, iso) {
+  const form = document.getElementById("planner");
+  document.getElementById("plannerDate").textContent = formatLongDate(selectedDate);
+  if (form.dataset.date !== iso) form.reset();
+  form.dataset.date = iso;
+  const list = document.getElementById("plannerList");
+  list.replaceChildren();
+  for (const item of items) {
+    const row = document.createElement("li");
+    row.append(item.kind + ": " + item.title + " ");
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.textContent = "Remove";
+    remove.setAttribute("aria-label", "Remove " + item.title);
+    remove.onclick = () => {
+      const entries = loadAllEntries();
+      const entry = getEntry(entries, iso);
+      entry.calendarItems = (entry.calendarItems || []).filter(saved => saved.id !== item.id);
+      saveAllEntries(entries);
+      renderCalendar();
+    };
+    row.append(remove);
+    list.append(row);
+  }
+  form.onsubmit = event => {
+    event.preventDefault();
+    const title = form.elements.itemTitle.value.trim();
+    if (!title) return;
+    const entries = loadAllEntries();
+    const entry = getEntry(entries, iso);
+    (entry.calendarItems ||= []).push({id: crypto.randomUUID(), kind: form.elements.kind.value, title});
+    saveAllEntries(entries);
+    form.reset();
+    renderCalendar();
+    form.elements.itemTitle.focus();
+  };
+}
+
 function renderCalendar() {
+  const entries = loadAllEntries();
+  const selected = toISODate(selectedDate);
+  renderPlanner(entries[selected]?.calendarItems || [], selected);
   const firstOfMonth = new Date(viewYear, viewMonthIndex, 1);
   const monthLabel = firstOfMonth.toLocaleDateString(undefined, { month: "long", year: "numeric" });
   els.monthLabel.textContent = monthLabel;
@@ -800,7 +841,14 @@ function renderCalendar() {
       const d = new Date(viewYear, viewMonthIndex, dayNum);
       const iso = toISODate(d);
       btn.textContent = String(dayNum);
-      btn.setAttribute("aria-label", formatLongDate(d));
+      const items = entries[iso]?.calendarItems || [];
+      for (const item of items) {
+        const label = document.createElement("span");
+        label.className = "calendarItem";
+        label.textContent = item.title;
+        btn.append(label);
+      }
+      btn.setAttribute("aria-label", [formatLongDate(d), ...items.map(item => item.kind + ": " + item.title)].join(", "));
       if (iso === toISODate(selectedDate)) btn.classList.add("isSelected");
       btn.addEventListener("click", () => selectDate(d));
     }
