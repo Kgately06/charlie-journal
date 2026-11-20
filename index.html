@@ -60,7 +60,39 @@
   color: var(--ink);
 }
 #planner input[name="itemDate"]::-webkit-date-and-time-value {font-family:inherit;font-weight:inherit}
-</style></head>
+</style><style>
+body[data-theme="moon"] .brand :is(img[alt="Dream Believer"], img[alt="Charlie"], svg[aria-label="by"]) {
+  filter: drop-shadow(1px 0 0 #ffe58e) drop-shadow(-1px 0 0 #ffe58e) drop-shadow(0 1px 0 #ffe58e) drop-shadow(0 -1px 0 #ffe58e) !important;
+}
+body[data-theme="moon"] .shootingStar {
+  animation: none;
+  opacity: 0;
+  background: linear-gradient(to right, transparent, #fff1ba);
+}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const star = document.querySelector(".shootingStar");
+  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+  if (!star) return;
+  function scheduleStar() {
+    setTimeout(() => {
+      if (!document.hidden && document.body.dataset.theme === "moon" && !reducedMotion.matches) {
+        star.style.left = (Math.random() * 85 - 5) + "%";
+        star.style.top = (Math.random() * 75) + "%";
+        star.animate([
+          { transform: "translate(0, 0) rotate(18deg)", opacity: 0 },
+          { opacity: 1, offset: 0.2 },
+          { transform: "translate(38vw, 12.35vw) rotate(18deg)", opacity: 0 }
+        ], { duration: 1050 });
+      }
+      scheduleStar();
+    }, 2500 + Math.random() * 5000);
+  }
+  scheduleStar();
+});
+</script>
+</head>
   <body>
     <div id="moonThemeScene" class="moonThemeScene" aria-hidden="true">
       <div id="moonThemeMoon" class="moonThemeMoon"></div>
