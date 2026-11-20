@@ -26,7 +26,7 @@ export default async function calendar(request) {
       || typeof item.title !== "string" || !item.title.trim() || item.title.length > 180
       || !(item.time === "" || /^([01]\d|2[0-3]):[0-5]\d$/.test(item.time))) return reply({}, 400);
     ids.add(item.id);
-    items.push({ id:item.id, date:item.date, kind:item.kind, title:item.title, time:item.time });
+    items.push({ id:item.id, date:item.date, kind:item.kind, title:item.title, time:item.time, important:item.important === true });
   }
   const options = body.revision ? { onlyIfMatch:body.revision } : { onlyIfNew:true };
   const saved = await store.setJSON(key, items, options);
