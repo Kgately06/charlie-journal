@@ -884,7 +884,18 @@ function renderCalendar() {
   const itemsForDate = date => familyCode
     ? (familySnapshot?.items || []).filter(item => item.date === date)
     : entries[date]?.calendarItems || [];
-  renderPlanner(itemsForDate(selected), selected);
+  const dayItems = itemsForDate(selected);
+  renderPlanner(dayItems, selected);
+  const agenda = document.getElementById("phoneAgenda");
+  const schedule = [...dayItems];
+  const holiday = federalHolidays(selectedDate.getFullYear()).get(selected);
+  if (holiday) schedule.unshift({kind:"Holiday", title:holiday});
+  agenda.replaceChildren(...schedule.map(item => {
+    const row = document.createElement("li");
+    row.className = "calendarItem--" + item.kind.toLowerCase();
+    row.textContent = calendarItemText(item);
+    return row;
+  }));
   const firstOfMonth = new Date(viewYear, viewMonthIndex, 1);
   const monthLabel = firstOfMonth.toLocaleDateString(undefined, { month: "long", year: "numeric" });
   els.monthLabel.textContent = monthLabel;
@@ -920,6 +931,17 @@ function renderCalendar() {
         label.className = "calendarItem calendarItem--" + item.kind.toLowerCase();
         label.textContent = calendarItemText(item);
         btn.append(label);
+      }
+      if (items.length) {
+        const dots = document.createElement("span");
+        dots.className = "dayDots";
+        dots.setAttribute("aria-hidden", "true");
+        for (const kind of new Set(items.map(item => item.kind))) {
+          const dot = document.createElement("i");
+          dot.className = "calendarItem--" + kind.toLowerCase();
+          dots.append(dot);
+        }
+        btn.append(dots);
       }
       btn.setAttribute("aria-label", [formatLongDate(d), ...items.map(calendarItemText)].join(", "));
       if (iso === toISODate(selectedDate)) btn.classList.add("isSelected");
