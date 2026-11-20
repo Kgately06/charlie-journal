@@ -878,9 +878,71 @@ function federalHolidays(year) {
   return dates;
 }
 
+function renderComingUp(entries) {
+  let line = document.getElementById("comingUp");
+  if (!line) {
+    line = document.createElement("p");
+    line.id = "comingUp";
+    els.weatherCard.after(line);
+  }
+  const now = new Date();
+  const today = toISODate(now);
+  const clock = String(now.getHours()).padStart(2, "0") + ":" + String(now.getMinutes()).padStart(2, "0");
+  const items = familyCode ? familySnapshot?.items || [] : localCalendarItems(entries);
+  const next = items.filter(item => item.date > today ||
+    (item.date === today && (!item.time || item.time >= clock)))
+    .sort((a,b) => a.date.localeCompare(b.date) || (a.time || "").localeCompare(b.time || ""))[0];
+  line.hidden = !next;
+  if (!next) return;
+  const tomorrow = new Date(now);
+  tomorrow.setDate(now.getDate() + 1);
+  const date = new Date(next.date + "T12:00:00");
+  const when = next.date === today ? "Today" : next.date === toISODate(tomorrow) ? "Tomorrow" :
+    date.toLocaleDateString(undefined, {month:"short", day:"numeric"});
+  line.textContent = "Coming up · " + when + " · " + calendarItemText(next);
+}
+
+function initLookBack() {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.textContent = "Look back";
+  const memory = document.createElement("div");
+  memory.setAttribute("aria-live", "polite");
+  let lastDate = "";
+  button.onclick = () => {
+    const today = toISODate(new Date());
+    const memories = Object.entries(loadAllEntries()).filter(([date, entry]) =>
+      date < today && entry?.night?.madeMeHappy?.trim());
+    const choices = memories.length > 1 ? memories.filter(([date]) => date !== lastDate) : memories;
+    memory.replaceChildren();
+    if (!choices.length) {
+      memory.textContent = "Your past happy moments will appear here after you save one.";
+      return;
+    }
+    const [date, entry] = choices[Math.floor(Math.random() * choices.length)];
+    lastDate = date;
+    const heading = document.createElement("strong");
+    heading.textContent = formatLongDate(new Date(date + "T12:00:00"));
+    const quote = document.createElement("p");
+    quote.textContent = entry.night.madeMeHappy;
+    memory.append(heading, quote);
+    const photo = entry.morning?.pictureOfDayDataUrl;
+    if (photo && photo.startsWith("data:image/")) {
+      const image = document.createElement("img");
+      image.src = photo;
+      image.alt = "Photo from " + heading.textContent;
+      image.style.maxWidth = "min(100%, 240px)";
+      memory.append(image);
+    }
+  };
+  els.madeMeHappy.closest("label").after(button, memory);
+}
+document.addEventListener("DOMContentLoaded", initLookBack);
+
 function renderCalendar() {
   const holidays = federalHolidays(viewYear);
   const entries = loadAllEntries();
+  renderComingUp(entries);
   const selected = toISODate(selectedDate);
   const itemsForDate = date => familyCode
     ? (familySnapshot?.items || []).filter(item => item.date === date)
