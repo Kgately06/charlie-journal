@@ -1530,3 +1530,11 @@ body[data-theme="sparkle"] .pageCard {
 @media (forced-colors: active) {
   #musicTracks { appearance: auto; background-image: none; }
 }
+
+.calendarGrid .calendarItem {
+  border-radius: 5px;
+  padding: .15em .25em;
+}
+.calendarItem--holiday { background-color: #fbe6a3; color: #594000; }
+.calendarItem--event { background-color: #cfe9fc; color: #143f63; }
+.calendarItem--reminder { background-color: #eadcf9; color: #48225e; }
