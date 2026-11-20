@@ -624,6 +624,14 @@ function getSvgCursor(svgContent) {
 }
 
 const CURSOR_SVG = {
+  reindeer: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+    <path d="M11 15 7 8 6 2m2 8L2 6m19 9 4-7 1-6m-2 8 6-4" fill="none" stroke="#683f28" stroke-width="2.6" stroke-linecap="round"/>
+    <path d="M12 17Q3 18 2 11q6-1 11 4m7 2q9 1 10-6-6-1-11 4" fill="#b47745" stroke="#644329"/>
+    <ellipse cx="16" cy="21" rx="9" ry="10" fill="#b47745" stroke="#644329"/>
+    <ellipse cx="16" cy="26" rx="6.5" ry="4" fill="#f0c790"/>
+    <g fill="#291d19"><circle cx="12" cy="20" r="1.4"/><circle cx="20" cy="20" r="1.4"/></g>
+    <ellipse cx="16" cy="25" rx="4" ry="3" fill="#dc293d"/><circle cx="15" cy="24" r=".9" fill="#ffe6de"/>
+  </svg>`,
   turkey: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
     <g stroke="#613520" stroke-width="1">
       <ellipse cx="21" cy="12" rx="4" ry="10" fill="#d35936"/>
@@ -675,6 +683,9 @@ function setCursor(type) {
   } else if (type === "rainbow") {
     cursorPath = getSvgCursor(CURSOR_SVG.rainbow);
     trailType = "rainbow";
+  } else if (type === "reindeer") {
+    cursorPath = getSvgCursor(CURSOR_SVG.reindeer).replace(" 0 0, auto", " 16 25, auto");
+    trailType = null;
   } else if (type === "turkey") {
     cursorPath = getSvgCursor(CURSOR_SVG.turkey).replace(" 0 0, auto", " 1 9, auto");
     trailType = null;
