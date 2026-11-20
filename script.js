@@ -1429,27 +1429,50 @@ function saveCraftImage(dataUrl) {
   renderSelectedDateHeader();
 }
 
-function onCraftImageSelected(file) {
-  if (!file) return;
-  const maxBytes = 1_500_000;
-  if (file.size > maxBytes) {
-    setSaveStatus("That picture is a bit too big. Try a smaller image (under ~1.5MB).");
-    els.craftImageInput.value = "";
-    return;
+async function journalPhotoUrl(file) {
+  if (file.size <= 1_500_000) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(file);
+    });
   }
+  const url = URL.createObjectURL(file);
+  try {
+    const image = new Image();
+    image.src = url;
+    await image.decode();
+    const scale = Math.min(1, 1440 / Math.max(image.naturalWidth, image.naturalHeight));
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+    canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+    const context = canvas.getContext("2d");
+    context.fillStyle = "white";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(image, 0, 0, canvas.width, canvas.height);
+    return canvas.toDataURL("image/jpeg", 0.78);
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
 
-  const reader = new FileReader();
-  reader.onload = () => {
-    const dataUrl = typeof reader.result === "string" ? reader.result : "";
+async function onCraftImageSelected(file) {
+  if (!file) return;
+  const date = toISODate(selectedDate);
+  const input = els.craftImageInput;
+  try {
+    const dataUrl = await journalPhotoUrl(file);
+    if (toISODate(selectedDate) !== date || input.files[0] !== file) return;
+    saveCraftImage(dataUrl);
     currentCraftImageDataUrl = dataUrl;
-    renderCraftImage(currentCraftImageDataUrl);
-    saveCraftImage(currentCraftImageDataUrl);
+    renderCraftImage(dataUrl);
     setSaveStatus("Saved craft picture.");
-  };
-  reader.onerror = () => {
-    setSaveStatus("Couldn’t read that picture. Please try again.");
-  };
-  reader.readAsDataURL(file);
+  } catch {
+    setSaveStatus("Couldn’t save that picture. Try another photo or a smaller copy.");
+  } finally {
+    if (input.files[0] === file) input.value = "";
+  }
 }
 
 function removeCraftImage() {
@@ -1470,26 +1493,22 @@ function savePictureOfDay(dataUrl) {
   renderSelectedDateHeader();
 }
 
-function onPictureOfDaySelected(file) {
+async function onPictureOfDaySelected(file) {
   if (!file) return;
-  const maxBytes = 1_500_000;
-  if (file.size > maxBytes) {
-    setSaveStatus("That picture is a bit too big. Try a smaller image (under ~1.5MB).");
-    els.pictureOfDayInput.value = "";
-    return;
-  }
-  const reader = new FileReader();
-  reader.onload = () => {
-    const dataUrl = typeof reader.result === "string" ? reader.result : "";
+  const date = toISODate(selectedDate);
+  const input = els.pictureOfDayInput;
+  try {
+    const dataUrl = await journalPhotoUrl(file);
+    if (toISODate(selectedDate) !== date || input.files[0] !== file) return;
+    savePictureOfDay(dataUrl);
     currentPictureOfDayDataUrl = dataUrl;
-    renderPictureOfDay(currentPictureOfDayDataUrl);
-    savePictureOfDay(currentPictureOfDayDataUrl);
+    renderPictureOfDay(dataUrl);
     setSaveStatus("Picture of the day saved.");
-  };
-  reader.onerror = () => {
-    setSaveStatus("Couldn’t read that picture. Please try again.");
-  };
-  reader.readAsDataURL(file);
+  } catch {
+    setSaveStatus("Couldn’t save that picture. Try another photo or a smaller copy.");
+  } finally {
+    if (input.files[0] === file) input.value = "";
+  }
 }
 
 function removePictureOfDay() {
