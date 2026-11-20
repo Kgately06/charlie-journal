@@ -456,8 +456,28 @@ function chooseJudyOutfit(current, tempF, laterRain) {
 
 let morningOutfit = null;
 
+function seasonalJudyOutfit(weather, date = new Date()) {
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  if (month === 11 && day >= 22 && day <= 28 && date.getDay() === 4) return "golden-harvest";
+  if (month === 11 && day === 20 && date.getFullYear() === 2026) return "pumpkin-patch";
+  if (weather === "rain" || weather === "winter") return weather;
+  if (month >= 3 && month <= 5) return "meadow-breeze";
+  if (month >= 9 && month <= 11) return day % 2 ? "sweater-weather" : "pumpkin-patch";
+  return weather;
+}
+
+for (const [key, label] of Object.entries({
+  "pumpkin-patch": "Pumpkin Patch",
+  "meadow-breeze": "Meadow Breeze",
+  "sweater-weather": "Sweater Weather",
+  "golden-harvest": "Golden Harvest"
+})) {
+  judyOutfits[key] = { src: `assets/judy/${key}.webp`, alt: `Judy wearing ${label}` };
+}
+
 function refreshJudyOutfit() {
-  const key = els.nightTab.getAttribute("aria-selected") === "true" ? "bedtime" : morningOutfit;
+  const key = els.nightTab.getAttribute("aria-selected") === "true" ? "bedtime" : seasonalJudyOutfit(morningOutfit);
   const original = els.weatherCard.querySelector("svg.weatherJudy");
   if (!original) return;
   let image = els.weatherCard.querySelector("img.weatherJudy");
