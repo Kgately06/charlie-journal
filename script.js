@@ -883,7 +883,7 @@ function renderComingUp(entries) {
   if (!line) {
     line = document.createElement("p");
     line.id = "comingUp";
-    els.weatherCard.after(line);
+    els.weatherCard.append(line);
   }
   const now = new Date();
   const today = toISODate(now);
@@ -892,8 +892,10 @@ function renderComingUp(entries) {
   const next = items.filter(item => item.date > today ||
     (item.date === today && (!item.time || item.time >= clock)))
     .sort((a,b) => a.date.localeCompare(b.date) || (a.time || "").localeCompare(b.time || ""))[0];
-  line.hidden = !next;
-  if (!next) return;
+  if (!next) {
+    line.textContent = familyCode && !familySnapshot ? "Coming up · Waiting for the shared calendar" : "Coming up · No upcoming events or reminders";
+    return;
+  }
   const tomorrow = new Date(now);
   tomorrow.setDate(now.getDate() + 1);
   const date = new Date(next.date + "T12:00:00");
