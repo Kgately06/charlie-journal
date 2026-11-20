@@ -32,6 +32,8 @@
 #planner input {flex:1;min-width:8rem}
 #planner select, #planner input, #planner button {box-sizing:border-box;font-size:1.0625rem;line-height:1.3;min-height:44px;padding:.55rem .75rem;max-width:100%}
 #plannerList li {overflow-wrap:anywhere;margin-block:.35rem}
+.calendarShare > summary {font-size:1.1rem;font-weight:650;line-height:1.4;padding:.5rem 0;cursor:pointer}
+.calendarShare > summary::marker {font-size:1.25em}
 </style></head>
   <body>
     <div id="moonThemeScene" class="moonThemeScene" aria-hidden="true">
@@ -180,7 +182,7 @@
           </form>
           <ul id="plannerList"></ul>
           <p id="calendarMessage" role="status"></p>
-          <details><summary>Share calendar</summary>
+          <details class="calendarShare"><summary>Share calendar</summary>
             <p>Start on the device with the events you want to share. On the other device, paste the code and choose Join. Anyone with the code can view and edit this calendar. Journal pages stay on each device.</p>
             <label>Private calendar code <input id="pairCode" type="text" autocomplete="off" spellcheck="false"></label>
             <button type="button" id="startSharing">Start sharing</button>
