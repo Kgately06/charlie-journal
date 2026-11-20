@@ -772,6 +772,7 @@ function renderCompletionUI(entry) {
 }
 
 function calendarItemText(item) {
+  if (item.kind === "Holiday") return item.title;
   const time = item.time ? new Date("2000-01-01T" + item.time).toLocaleTimeString(undefined, {hour:"numeric", minute:"2-digit"}) + " " : "";
   return item.kind + ": " + time + item.title;
 }
@@ -920,7 +921,7 @@ function renderCalendar() {
         label.textContent = calendarItemText(item);
         btn.append(label);
       }
-      btn.setAttribute("aria-label", [formatLongDate(d), ...items.map(item => item.kind + ": " + item.title)].join(", "));
+      btn.setAttribute("aria-label", [formatLongDate(d), ...items.map(calendarItemText)].join(", "));
       if (iso === toISODate(selectedDate)) btn.classList.add("isSelected");
       btn.addEventListener("click", () => selectDate(d));
     }
