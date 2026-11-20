@@ -809,7 +809,41 @@ function renderPlanner(items, iso) {
   };
 }
 
+function federalHolidays(year) {
+  const dates = new Map();
+  function fixed(month, day, title, holidayYear = year) {
+    const actual = new Date(holidayYear, month - 1, day);
+    dates.set(toISODate(actual), title);
+    const weekday = actual.getDay();
+    if (weekday === 0 || weekday === 6) {
+      actual.setDate(actual.getDate() + (weekday === 0 ? 1 : -1));
+      dates.set(toISODate(actual), title + " (observed)");
+    }
+  }
+  function weekday(month, dayOfWeek, occurrence, title) {
+    const first = new Date(year, month - 1, 1);
+    first.setDate(1 + (dayOfWeek - first.getDay() + 7) % 7 + 7 * (occurrence - 1));
+    dates.set(toISODate(first), title);
+  }
+  fixed(1, 1, "New Year’s Day");
+  fixed(1, 1, "New Year’s Day", year + 1);
+  if (year >= 1986) weekday(1, 1, 3, "Martin Luther King Jr. Day");
+  weekday(2, 1, 3, "Washington’s Birthday");
+  const memorial = new Date(year, 4, 31);
+  memorial.setDate(31 - (memorial.getDay() + 6) % 7);
+  dates.set(toISODate(memorial), "Memorial Day");
+  if (year >= 2021) fixed(6, 19, "Juneteenth");
+  fixed(7, 4, "Independence Day");
+  weekday(9, 1, 1, "Labor Day");
+  weekday(10, 1, 2, "Columbus Day");
+  fixed(11, 11, "Veterans Day");
+  weekday(11, 4, 4, "Thanksgiving");
+  fixed(12, 25, "Christmas Day");
+  return dates;
+}
+
 function renderCalendar() {
+  const holidays = federalHolidays(viewYear);
   const entries = loadAllEntries();
   const selected = toISODate(selectedDate);
   renderPlanner(entries[selected]?.calendarItems || [], selected);
@@ -841,7 +875,8 @@ function renderCalendar() {
       const d = new Date(viewYear, viewMonthIndex, dayNum);
       const iso = toISODate(d);
       btn.textContent = String(dayNum);
-      const items = entries[iso]?.calendarItems || [];
+      const items = [...(entries[iso]?.calendarItems || [])];
+      if (holidays.has(iso)) items.unshift({kind: "Holiday", title: holidays.get(iso)});
       for (const item of items) {
         const label = document.createElement("span");
         label.className = "calendarItem";
