@@ -12,6 +12,7 @@
     />
     <link rel="stylesheet" href="styles.css" />
     <script src="moon-phases.js" defer></script>
+    <script src="calendar-sharing.js" defer></script>
     <script src="script.js" defer></script>
   <style>
 .book > .calendarWithArt, .calendarWithArt + .pageCard { grid-column: 1 / -1; }
@@ -172,9 +173,20 @@
             <h3 id="plannerDate"></h3>
             <select aria-label="Item type" name="kind"><option>Event</option><option>Reminder</option></select>
             <input aria-label="Item title" name="itemTitle" placeholder="What’s happening or due?" required maxlength="180">
+            <label>Date <input type="date" name="itemDate"></label>
+            <label>Time (optional) <input type="time" name="itemTime"></label>
             <button type="submit">Add item</button>
+            <button type="button" id="cancelItemEdit" hidden>Cancel edit</button>
           </form>
           <ul id="plannerList"></ul>
+          <p id="calendarMessage" role="status"></p>
+          <details><summary>Share calendar</summary>
+            <p>Start on the device with the events you want to share. On the other device, paste the code and choose Join. Anyone with the code can view and edit this calendar. Journal pages stay on each device.</p>
+            <label>Private calendar code <input id="pairCode" type="text" autocomplete="off" spellcheck="false"></label>
+            <button type="button" id="startSharing">Start sharing</button>
+            <button type="button" id="joinSharing">Join</button>
+            <button type="button" id="leaveSharing" hidden>Disconnect this device</button>
+          </details>
         </aside>
 
         </div>
