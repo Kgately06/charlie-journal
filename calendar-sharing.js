@@ -5,7 +5,7 @@ let calendarBusy = false;
 
 function localCalendarItems(entries) {
   return Object.entries(entries).flatMap(([date, entry]) =>
-    (entry?.calendarItems || []).map(({id, kind, title, time = ""}) => ({id, date, kind, title, time})));
+    (entry?.calendarItems || []).map(({id, kind, title, important = false, time = ""}) => ({id, date, kind, title, time, important})));
 }
 
 async function calendarRequest(code, body) {
