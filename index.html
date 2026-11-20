@@ -43,10 +43,11 @@
   .calendarGrid .dayBtn {min-height:44px;align-items:center;justify-content:center;padding:3px 0}
   .calendarGrid .calendarItem {display:none}
   .dayDots {display:flex;gap:3px;justify-content:center}
-  .dayDots i {width:6px;height:6px;border-radius:50%;background:currentColor}
-  .dayDots .calendarItem--holiday {color:#976100}
-  .dayDots .calendarItem--event {color:#16699e}
-  .dayDots .calendarItem--reminder {color:#8746ae}
+  .calendarCard .calendarItem--holiday {--marker:#ffca16}
+  .calendarCard .calendarItem--event {--marker:#398fe9}
+  .calendarCard .calendarItem--reminder {--marker:#aa70df}
+  .dayDots i, #phoneAgenda li::before {display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--marker);box-shadow:0 0 0 1px rgba(0,0,0,.14)}
+  #phoneAgenda li::before {content:"";margin-inline-end:.5em;vertical-align:middle}
   #planner {display:grid;grid-template-columns:minmax(0,1fr);align-items:stretch}
   #planner :is(input,select,button,label) {width:100%;min-width:0;box-sizing:border-box}
   #phoneAgenda:not(:empty) {display:grid;gap:4px;list-style:none;padding:0;margin:0 0 .5rem}
