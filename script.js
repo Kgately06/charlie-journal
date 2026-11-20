@@ -477,7 +477,7 @@ for (const [key, label] of Object.entries({
 }
 
 function refreshJudyOutfit() {
-  const key = els.nightTab.getAttribute("aria-selected") === "true" ? "bedtime" : seasonalJudyOutfit(morningOutfit);
+  const key = els.nightTab.getAttribute("aria-selected") === "true" ? "bedtime" : seasonalJudyOutfit(morningOutfit, selectedDate);
   const original = els.weatherCard.querySelector("svg.weatherJudy");
   if (!original) return;
   let image = els.weatherCard.querySelector("img.weatherJudy");
@@ -765,6 +765,7 @@ function selectDate(d) {
 }
 
 function renderSelectedDateHeader() {
+  refreshJudyOutfit();
   els.selectedDateText.textContent = formatLongDate(selectedDate);
   const entries = loadAllEntries();
   const iso = toISODate(selectedDate);
