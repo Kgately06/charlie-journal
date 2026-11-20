@@ -64,32 +64,51 @@
 body[data-theme="moon"] .brand :is(img[alt="Dream Believer"], img[alt="Charlie"], svg[aria-label="by"]) {
   filter: drop-shadow(1px 0 0 #ffe58e) drop-shadow(-1px 0 0 #ffe58e) drop-shadow(0 1px 0 #ffe58e) drop-shadow(0 -1px 0 #ffe58e) !important;
 }
-body[data-theme="moon"] .shootingStar {
-  animation: none;
-  opacity: 0;
-  background: linear-gradient(to right, transparent, #fff1ba);
+body[data-theme="moon"] .header { position: relative; isolation: isolate; }
+.headerMeteorSky { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.headerMeteor {
+  position: absolute; width: clamp(55px, 10vw, 125px); height: 3px;
+  background: linear-gradient(to right, transparent, #ffe299);
+  opacity: 0; border-radius: 50%;
 }
+.headerMeteor::after {
+  content: "✦"; position: absolute; right: -5px; top: 50%; transform: translateY(-50%);
+  font: 20px/1 sans-serif; color: #fff2bf; text-shadow: 0 0 6px #ffd777;
+}
+body[data-theme="moon"] .shootingStars { display: none; }
 </style>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  const star = document.querySelector(".shootingStar");
-  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
-  if (!star) return;
-  function scheduleStar() {
-    setTimeout(() => {
-      if (!document.hidden && document.body.dataset.theme === "moon" && !reducedMotion.matches) {
-        star.style.left = (Math.random() * 85 - 5) + "%";
-        star.style.top = (Math.random() * 75) + "%";
-        star.animate([
-          { transform: "translate(0, 0) rotate(18deg)", opacity: 0 },
-          { opacity: 1, offset: 0.2 },
-          { transform: "translate(38vw, 12.35vw) rotate(18deg)", opacity: 0 }
-        ], { duration: 1050 });
-      }
-      scheduleStar();
-    }, 2500 + Math.random() * 5000);
+  const header = document.querySelector(".header");
+  const sky = document.createElement("div");
+  sky.className = "headerMeteorSky";
+  sky.setAttribute("aria-hidden", "true");
+  const star = document.createElement("span");
+  star.className = "headerMeteor";
+  sky.append(star);
+  header.prepend(sky);
+  const motion = matchMedia("(prefers-reduced-motion: reduce)");
+  let timer, flight;
+  function fly() {
+    star.style.left = (Math.random() * 24 + 3) + "%";
+    star.style.top = (Math.random() * 18 + 4) + "%";
+    flight = star.animate([
+      { transform: "translate(0,0) rotate(10deg)", opacity: 0 },
+      { opacity: 1, offset: 0.12 },
+      { opacity: 1, offset: 0.8 },
+      { transform: "translate(48vw,8.5vw) rotate(10deg)", opacity: 0 }
+    ], { duration: 1800 });
+    timer = setTimeout(fly, 3200 + Math.random() * 2300);
   }
-  scheduleStar();
+  function sync() {
+    clearTimeout(timer);
+    flight?.cancel();
+    if (document.body.dataset.theme === "moon" && !motion.matches && !document.hidden) fly();
+  }
+  new MutationObserver(sync).observe(document.body, { attributes: true, attributeFilter: ["data-theme"] });
+  document.addEventListener("visibilitychange", sync);
+  motion.addEventListener("change", sync);
+  sync();
 });
 </script>
 </head>
