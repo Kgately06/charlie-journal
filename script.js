@@ -771,41 +771,75 @@ function renderCompletionUI(entry) {
   }
 }
 
+function calendarItemText(item) {
+  const time = item.time ? new Date("2000-01-01T" + item.time).toLocaleTimeString(undefined, {hour:"numeric", minute:"2-digit"}) + " " : "";
+  return item.kind + ": " + time + item.title;
+}
+
 function renderPlanner(items, iso) {
   const form = document.getElementById("planner");
-  document.getElementById("plannerDate").textContent = formatLongDate(selectedDate);
-  if (form.dataset.date !== iso) form.reset();
+  const submit = form.querySelector("[type=submit]");
+  const cancel = document.getElementById("cancelItemEdit");
+  const reset = () => {
+    form.reset();
+    form.dataset.editId = "";
+    form.elements.itemDate.value = iso;
+    submit.textContent = "Add item";
+    cancel.hidden = true;
+  };
+  if (form.dataset.date !== iso || form.dataset.code !== familyCode) reset();
   form.dataset.date = iso;
+  form.dataset.code = familyCode;
+  cancel.onclick = reset;
+  document.getElementById("plannerDate").textContent = formatLongDate(selectedDate);
   const list = document.getElementById("plannerList");
   list.replaceChildren();
   for (const item of items) {
     const row = document.createElement("li");
-    row.append(item.kind + ": " + item.title + " ");
+    row.append(calendarItemText(item) + " ");
+    const edit = document.createElement("button");
+    edit.type = "button";
+    edit.textContent = "Edit";
+    edit.onclick = () => {
+      form.dataset.editId = item.id;
+      form.elements.kind.value = item.kind;
+      form.elements.itemTitle.value = item.title;
+      form.elements.itemDate.value = iso;
+      form.elements.itemTime.value = item.time || "";
+      submit.textContent = "Save changes";
+      cancel.hidden = false;
+      form.elements.itemTitle.focus();
+    };
     const remove = document.createElement("button");
     remove.type = "button";
     remove.textContent = "Remove";
-    remove.setAttribute("aria-label", "Remove " + item.title);
-    remove.onclick = () => {
-      const entries = loadAllEntries();
-      const entry = getEntry(entries, iso);
-      entry.calendarItems = (entry.calendarItems || []).filter(saved => saved.id !== item.id);
-      saveAllEntries(entries);
+    remove.onclick = () => runCalendarAction(async () => {
+      await changeCalendarItem({...item,date:iso}, null);
+      if (form.dataset.editId === item.id) reset();
       renderCalendar();
-    };
-    row.append(remove);
+      calendarMessage("Item removed.");
+    });
+    row.append(edit, remove);
     list.append(row);
   }
   form.onsubmit = event => {
     event.preventDefault();
-    const title = form.elements.itemTitle.value.trim();
-    if (!title) return;
-    const entries = loadAllEntries();
-    const entry = getEntry(entries, iso);
-    (entry.calendarItems ||= []).push({id: crypto.randomUUID(), kind: form.elements.kind.value, title});
-    saveAllEntries(entries);
-    form.reset();
-    renderCalendar();
-    form.elements.itemTitle.focus();
+    runCalendarAction(async () => {
+      const title = form.elements.itemTitle.value.trim();
+      const date = form.elements.itemDate.value;
+      if (!title || !date) throw new Error("Enter a title and date.");
+      const id = form.dataset.editId;
+      const original = items.find(item => item.id === id);
+      if (id && !original) throw new Error("This item has moved or was removed. Cancel this edit and select it again.");
+      await changeCalendarItem(original && {...original,date:iso}, {
+        id:id || crypto.randomUUID(), title, date, time:form.elements.itemTime.value,
+        kind:form.elements.kind.value
+      });
+      reset();
+      if (date !== iso) selectDate(new Date(date + "T12:00:00"));
+      else renderCalendar();
+      calendarMessage("Item saved.");
+    });
   };
 }
 
@@ -846,7 +880,10 @@ function renderCalendar() {
   const holidays = federalHolidays(viewYear);
   const entries = loadAllEntries();
   const selected = toISODate(selectedDate);
-  renderPlanner(entries[selected]?.calendarItems || [], selected);
+  const itemsForDate = date => familyCode
+    ? (familySnapshot?.items || []).filter(item => item.date === date)
+    : entries[date]?.calendarItems || [];
+  renderPlanner(itemsForDate(selected), selected);
   const firstOfMonth = new Date(viewYear, viewMonthIndex, 1);
   const monthLabel = firstOfMonth.toLocaleDateString(undefined, { month: "long", year: "numeric" });
   els.monthLabel.textContent = monthLabel;
@@ -875,12 +912,12 @@ function renderCalendar() {
       const d = new Date(viewYear, viewMonthIndex, dayNum);
       const iso = toISODate(d);
       btn.textContent = String(dayNum);
-      const items = [...(entries[iso]?.calendarItems || [])];
+      const items = [...itemsForDate(iso)];
       if (holidays.has(iso)) items.unshift({kind: "Holiday", title: holidays.get(iso)});
       for (const item of items) {
         const label = document.createElement("span");
         label.className = "calendarItem calendarItem--" + item.kind.toLowerCase();
-        label.textContent = item.kind + ": " + item.title;
+        label.textContent = calendarItemText(item);
         btn.append(label);
       }
       btn.setAttribute("aria-label", [formatLongDate(d), ...items.map(item => item.kind + ": " + item.title)].join(", "));
