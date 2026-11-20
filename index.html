@@ -34,6 +34,24 @@
 #plannerList li {overflow-wrap:anywhere;margin-block:.35rem}
 .calendarShare > summary {font-size:1.1rem;font-weight:650;line-height:1.4;padding:.5rem 0;cursor:pointer}
 .calendarShare > summary::marker {font-size:1.25em}
+#phoneAgenda, .dayDots {display:none}
+@media (max-width:600px) {
+  .app .book {grid-template-columns:minmax(0,1fr)}
+  .app .book > .calendarWithArt {min-width:0;width:100%}
+  .calendarWithArt .calendarCard {min-width:0;padding-inline:8px}
+  .calendarCard .calendarGrid,.calendarCard .dowRow {gap:3px}
+  .calendarGrid .dayBtn {min-height:44px;align-items:center;justify-content:center;padding:3px 0}
+  .calendarGrid .calendarItem {display:none}
+  .dayDots {display:flex;gap:3px;justify-content:center}
+  .dayDots i {width:6px;height:6px;border-radius:50%;background:currentColor}
+  .dayDots .calendarItem--holiday {color:#976100}
+  .dayDots .calendarItem--event {color:#16699e}
+  .dayDots .calendarItem--reminder {color:#8746ae}
+  #planner {display:grid;grid-template-columns:minmax(0,1fr);align-items:stretch}
+  #planner :is(input,select,button,label) {width:100%;min-width:0;box-sizing:border-box}
+  #phoneAgenda:not(:empty) {display:grid;gap:4px;list-style:none;padding:0;margin:0 0 .5rem}
+  #phoneAgenda li {padding:.35rem .55rem;border-radius:6px;overflow-wrap:anywhere}
+}
 </style></head>
   <body>
     <div id="moonThemeScene" class="moonThemeScene" aria-hidden="true">
@@ -173,6 +191,7 @@
           <div id="calendarGrid" class="calendarGrid" role="grid" aria-label="Days of month"></div>
           <form id="planner">
             <h3 id="plannerDate"></h3>
+            <ul id="phoneAgenda" aria-label="Selected day’s schedule"></ul>
             <select aria-label="Item type" name="kind"><option>Event</option><option>Reminder</option></select>
             <input aria-label="Item title" name="itemTitle" placeholder="What’s happening or due?" required maxlength="180">
             <label>Date <input type="date" name="itemDate"></label>
