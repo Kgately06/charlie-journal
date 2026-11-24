@@ -356,15 +356,16 @@ const marginMessages = {
   ]
 };
 
-function applyTheme(theme) {
+function applyTheme(theme, { save = true } = {}) {
   const next = theme || "rainbow";
+  if (save) themeSelections.set(themeStorageKey(), next);
   document.body.dataset.theme = next;
   const notes = marginMessages[next] || notebookMessages;
   document.querySelectorAll(".notebookNotes span").forEach((note, index) => {
     note.textContent = notes[index];
   });
   try {
-    localStorage.setItem(THEME_STORAGE_KEY, next);
+    if (save) localStorage.setItem(themeStorageKey(), next);
   } catch {
     // ignore
   }
@@ -582,15 +583,33 @@ function toggleWeatherCard() {
   if (!weatherLoaded && !weatherLoading) getWeatherAndShow();
 }
 
-function initTheme() {
-  let theme = "rainbow";
+const themeSelections = new Map();
+const decemberThemes = new Set(["fairy-light-forest"]);
+
+function themeStorageKey() {
+  return viewMonthIndex === 11 ? "cj.decemberTheme.v1" : THEME_STORAGE_KEY;
+}
+
+function syncThemePicker() {
+  const isDecember = viewMonthIndex === 11;
+  const buttons = document.querySelectorAll(".themeBtn");
+
+  buttons.forEach((button) => {
+    button.hidden = isDecember && !decemberThemes.has(button.dataset.theme);
+    // Theme button styles may set display explicitly.
+    button.style.display = button.hidden ? "none" : "";
+  });
+
+  let theme = isDecember ? "fairy-light-forest" : "rainbow";
   try {
-    const stored = localStorage.getItem(THEME_STORAGE_KEY);
-    if (stored) theme = stored;
+    const stored = themeSelections.get(themeStorageKey()) || localStorage.getItem(themeStorageKey());
+    if (stored && Array.from(buttons).some((button) => !button.hidden && button.dataset.theme === stored)) {
+      theme = stored;
+    }
   } catch {
-    // ignore
+    // Keep the default when storage is unavailable.
   }
-  applyTheme(theme);
+  if (document.body.dataset.theme !== theme) applyTheme(theme, { save: false });
 }
 
 function setSoundEnabled(on) {
@@ -994,6 +1013,7 @@ function initLookBack() {
 document.addEventListener("DOMContentLoaded", initLookBack);
 
 function renderCalendar() {
+  syncThemePicker();
   const holidays = federalHolidays(viewYear);
   const entries = loadAllEntries();
   renderComingUp(entries);
@@ -1637,7 +1657,6 @@ function init() {
   wireEvents();
   showWeatherCard(true);
   getWeatherAndShow();
-  initTheme();
   initSound();
   initCursor();
   setActiveTab("morning");
