@@ -584,7 +584,7 @@ function toggleWeatherCard() {
 }
 
 const themeSelections = new Map();
-const decemberThemes = new Set(["fairy-light-forest"]);
+const decemberThemes = new Set(["fairy-light-forest", "jewel-pink-forest", "pink-gingerbread"]);
 
 function themeStorageKey() {
   return viewMonthIndex === 11 ? "cj.decemberTheme.v1" : THEME_STORAGE_KEY;
