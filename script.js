@@ -803,7 +803,18 @@ function setActiveTab(tab) {
   requestAnimationFrame(syncFlipMinHeight);
 }
 
+// The December edition has its own artwork and reads the same saved entries.
+function openDecemberJournal(date, replaceHistory = false) {
+  if (date.getMonth() !== 11) return false;
+  const url = new URL("december.html", window.location.href);
+  url.searchParams.set("holiday", toISODate(date));
+  if (replaceHistory) window.location.replace(url.href);
+  else window.location.assign(url.href);
+  return true;
+}
+
 function selectDate(d) {
+  if (openDecemberJournal(d)) return;
   selectedDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
   viewYear = selectedDate.getFullYear();
   viewMonthIndex = selectedDate.getMonth();
@@ -1567,6 +1578,7 @@ function removePictureOfDay() {
 
 function shiftMonth(delta) {
   const d = new Date(viewYear, viewMonthIndex + delta, 1);
+  if (openDecemberJournal(d)) return;
   viewYear = d.getFullYear();
   viewMonthIndex = d.getMonth();
   renderCalendar();
@@ -1579,12 +1591,7 @@ function wireEvents() {
   if (els.todayBtn) els.todayBtn.addEventListener("click", (e) => {
     e.preventDefault();
     const today = new Date();
-    selectedDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-    viewYear = today.getFullYear();
-    viewMonthIndex = today.getMonth();
-    renderCalendar();
-    renderSelectedDateHeader();
-    loadEntryIntoForm();
+    selectDate(today);
     setSaveStatus("Jumped to today.");
   });
 
@@ -1649,6 +1656,7 @@ function wireEvents() {
 
 function init() {
   const today = new Date();
+  if (openDecemberJournal(today, true)) return;
   viewYear = today.getFullYear();
   viewMonthIndex = today.getMonth();
   selectedDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
