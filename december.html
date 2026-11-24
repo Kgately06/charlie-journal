@@ -4181,18 +4181,19 @@ function renderComingUp(entries) {
     line.id = "comingUp";
     els.weatherCard.append(line);
   }
-  const now = new Date();
   let countdown = document.getElementById("christmasCountdown");
   if (!countdown) {
     countdown = document.createElement("p");
     countdown.id = "christmasCountdown";
     line.after(countdown);
   }
-  const days = (Date.UTC(now.getFullYear(), 11, 25) -
-    Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())) / 86400000;
+  const year = selectedDate.getFullYear();
+  const days = (Date.UTC(year, 11, 25) -
+    Date.UTC(year, selectedDate.getMonth(), selectedDate.getDate())) / 86400000;
   countdown.hidden = days < 0 || days > 31;
   countdown.textContent = days === 0 ? "🎄 Merry Christmas!" :
     "🎄 " + days + (days === 1 ? " day" : " days") + " until Christmas";
+  const now = new Date();
   const today = toISODate(now);
   const clock = String(now.getHours()).padStart(2, "0") + ":" + String(now.getMinutes()).padStart(2, "0");
   const items = familyCode ? familySnapshot?.items || [] : localCalendarItems(entries);
