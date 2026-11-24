@@ -637,9 +637,12 @@ function initSound() {
 }
 
 // Tiny SVG cursors for girly options (24x24, encoded for data URI)
+let touchCursorImage = "";
+
 function getSvgCursor(svgContent) {
   const encoded = encodeURIComponent(svgContent);
-  return `url("data:image/svg+xml,${encoded}") 0 0, auto`;
+  touchCursorImage = `data:image/svg+xml,${encoded}`;
+  return `url("${touchCursorImage}") 0 0, auto`;
 }
 
 const CURSOR_SVG = {
@@ -677,6 +680,7 @@ const CURSOR_SVG = {
 };
 
 function setCursor(type) {
+  touchCursorImage = "";
   let cursorPath = "";
 
   if (type === "regular") {
@@ -776,7 +780,30 @@ function showCursorTrail(e) {
   }
 }
 document.addEventListener("pointermove", showCursorTrail);
-document.addEventListener("pointerdown", showCursorTrail);
+document.addEventListener("pointerdown", (event) => {
+  if (event.pointerType !== "touch") {
+    showCursorTrail(event);
+    return;
+  }
+  if (!touchCursorImage || !event.isPrimary) return;
+
+  const icon = document.createElement("img");
+  icon.alt = "";
+  icon.src = touchCursorImage;
+  const left = Math.max(0, Math.min(window.innerWidth - 32, event.clientX - 16));
+  const top = event.clientY < 48 ? event.clientY + 12 : event.clientY - 46;
+  Object.assign(icon.style, {
+    position: "fixed",
+    pointerEvents: "none",
+    width: "32px",
+    height: "32px",
+    left: left + "px",
+    top: top + "px",
+    zIndex: "2147483647"
+  });
+  document.body.appendChild(icon);
+  setTimeout(() => icon.remove(), 450);
+});
 
 function syncFlipMinHeight() {
   const frontH = els.morningPage.scrollHeight;
