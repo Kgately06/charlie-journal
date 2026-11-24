@@ -3724,6 +3724,7 @@ const marginMessages = {
 
 function applyTheme(theme, { save = true } = {}) {
   const next = theme || "rainbow";
+  const changed = document.body.dataset.theme !== next;
   if (save) themeSelections.set(themeStorageKey(), next);
   document.body.dataset.theme = next;
   updateSceneReveal();
@@ -3741,7 +3742,7 @@ function applyTheme(theme, { save = true } = {}) {
     btn.classList.toggle("isActive", btn.dataset.theme === next);
   });
   updateMoonPhaseUI();
-  Object.values(scratchTickets).forEach((ticket) => ticket.themeChanged());
+  Object.values(scratchTickets).forEach((ticket) => ticket.themeChanged(changed));
   requestAnimationFrame(syncFlipMinHeight);
 }
 
@@ -4704,27 +4705,33 @@ function createScratchTicket(canvas, text, button, field, choices) {
   canvas.addEventListener("lostpointercapture", finishStroke);
   new ResizeObserver(paint).observe(canvas.parentElement);
 
+  function reset(saved) {
+    stopTyping();
+    activePointer = null;
+    strokes = [];
+    message = saved || pick();
+    revealed = Boolean(saved) && !decemberThemes.has(document.body.dataset.theme);
+    canvas.hidden = revealed || !ctx;
+    text.textContent = revealed || ctx ? `“${message}”` : "";
+    if (revealed) text.removeAttribute("aria-hidden");
+    else text.setAttribute("aria-hidden", "true");
+    updateLabels();
+    requestAnimationFrame(paint);
+  }
+
   return {
     reveal,
-    themeChanged() {
+    reset,
+    themeChanged(changed) {
+      if (changed && message && decemberThemes.has(document.body.dataset.theme)) {
+        reset(message);
+        return;
+      }
       if (typingTimer !== null) {
         stopTyping();
         text.textContent = `“${message}”`;
         text.removeAttribute("aria-hidden");
       }
-      updateLabels();
-      requestAnimationFrame(paint);
-    },
-    reset(saved) {
-      stopTyping();
-      activePointer = null;
-      strokes = [];
-      message = saved || pick();
-      revealed = Boolean(saved);
-      canvas.hidden = revealed || !ctx;
-      text.textContent = `“${message}”`;
-      if (revealed) text.removeAttribute("aria-hidden");
-      else text.setAttribute("aria-hidden", "true");
       updateLabels();
       requestAnimationFrame(paint);
     },
