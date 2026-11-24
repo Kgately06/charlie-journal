@@ -2085,6 +2085,31 @@ body:is([data-theme="fairy-light-forest"], [data-theme="ruby-winter"], [data-the
 body:is([data-theme="fairy-light-forest"], [data-theme="ruby-winter"], [data-theme="christines-gingerbread-house"], [data-theme="santa-and-rudolph"], [data-theme="snow-globe-skate-night"], [data-theme="pastel-village-trees"], [data-theme="rainbow-pond"], [data-theme="christmas-morning"], [data-theme="snowman-wave"], [data-theme="north-pole-toy-shop"], [data-theme="raspberry-window"], [data-theme="beaded-trees"], [data-theme="christmas-eve-delivery"]) .weeklyCraftActivity ol:last-child {
   margin-bottom: 0;
 }
+/* Keep the whole craft legible as each illustration scrolls behind it. */
+.weeklyCraftPanel {
+  --forest-paper: var(--forest-cream, #fff8e8);
+  color: #24362b;
+  background: var(--forest-paper);
+  border: 1px solid #b8804f;
+  border-radius: 1.35rem;
+  padding: clamp(.65rem, 2.5vw, 1.3rem);
+  min-width: 0;
+}
+.weeklyCraftPanel #weeklyCraft {
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+}
+.weeklyCraftPanel [data-craft-week] {
+  font-weight: 700;
+  line-height: 1.55;
+  overflow-wrap: break-word;
+}
+.weeklyCraftPanel [data-craft-week] ol {
+  padding-inline-start: 1.55em;
+}
+.weeklyCraftPanel [data-craft-week] li + li {
+  margin-block-start: .55em;
+}
 .craftSubmission {
   display: grid;
   gap: .6rem;
@@ -2679,6 +2704,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
                 <div class="divider"></div>
 
+                <section class="weeklyCraftPanel" aria-labelledby="weeklyCraft">
                 <h2 class="sectionTitle" id="weeklyCraft">This week’s craft is…</h2>
                 <p class="craftChannel"><a href="https://www.youtube.com/@DreamBeliever-c5p" target="_blank" rel="noopener noreferrer">Watch me make this craft on YouTube!</a></p>
                 <div class="craftRow weeklyCraftActivity">
@@ -2852,6 +2878,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                   </div>
                   <span id="craftStatus" role="status"></span>
                 </div>
+
+                </section>
 
                 <div class="divider"></div>
 
