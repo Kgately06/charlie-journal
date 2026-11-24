@@ -3370,6 +3370,191 @@ const THEME_STORAGE_KEY = "cj.theme.v1";
 const SOUND_STORAGE_KEY = "cj.sound.v1";
 const scratchTickets = {};
 
+const DECEMBER_AFFIRMATIONS = {
+  "christines-gingerbread-house": {
+    affirmation: [
+      "My ideas belong here, right down to the tiniest gumdrop.",
+      "A wobbly line of icing still belongs on my creation.",
+      "I get to pick the candy colors I love.",
+      "I can make room at my table for one more baker.",
+    ],
+    nightAffirmation: [
+      "I can be proud of the things my two hands make.",
+      "If my cookie crumbles, I can bake again another day.",
+      "I can picture warm bakery windows while I settle down.",
+      "I get to dream up tomorrow’s gingerbread roof.",
+    ],
+  },
+  "santa-and-rudolph": {
+    affirmation: [
+      "What makes me different can help my team.",
+      "I can go first when a friend needs someone to follow.",
+      "I can walk beside a friend who feels shy.",
+      "I’m allowed to ask for a guide when I lose my way.",
+    ],
+    nightAffirmation: [
+      "I can let somebody else lead the sleigh tonight.",
+      "I can be proud of a brave step, even a tiny one.",
+      "I belong with my team on my quiet days, too.",
+      "I can picture Rudolph curled up and get cozy myself.",
+    ],
+  },
+  "christmas-morning": {
+    affirmation: [
+      "I can enjoy the surprise before I untie the ribbon.",
+      "I can give someone a gift I made myself.",
+      "I get to make up traditions with the people I love.",
+      "My thank-you can be a drawing, a note, or a hug.",
+    ],
+    nightAffirmation: [
+      "I can keep a happy memory after the wrapping paper is gone.",
+      "Being together is a part of today I can carry to bed.",
+      "I can tuck my favorite surprise away for tomorrow.",
+      "I can enjoy the last little glow of the tree before sleep.",
+    ],
+  },
+  "snowman-wave": {
+    affirmation: [
+      "My little wave can be the start of a friendship.",
+      "I can say hello my own way.",
+      "I can invite someone on the sidelines to come play.",
+      "I can be the first to smile across the playground.",
+    ],
+    nightAffirmation: [
+      "I can wave goodnight to the moon and snuggle in.",
+      "I can remember a friendly face from today.",
+      "A hello I was too shy to say can wait until tomorrow.",
+      "I can close my eyes and keep my snowman’s smile.",
+    ],
+  },
+  "pastel-village-trees": {
+    affirmation: [
+      "I get to draw a village where the trees grow pink.",
+      "I can follow a new path one little turn at a time.",
+      "I can welcome a neighbor into my game.",
+      "I have my own place among all these different trees.",
+    ],
+    nightAffirmation: [
+      "I can imagine a little house where I feel cozy.",
+      "My make-believe village will be there when I wake up.",
+      "I can choose a soft color for a quiet bedtime thought.",
+      "I can picture each village window going dark, one by one.",
+    ],
+  },
+  "rainbow-pond": {
+    affirmation: [
+      "When I look again, I can spot a color I missed.",
+      "I can be curious about what’s under the surface.",
+      "My feelings can change like the colors on the water.",
+      "I can pause by the pond and take one slow breath.",
+    ],
+    nightAffirmation: [
+      "I can let a busy thought pass like a ripple.",
+      "I can name one thing I liked about myself today.",
+      "I can picture the bright trees resting in the quiet water.",
+      "I can take a still moment all to myself.",
+    ],
+  },
+  "snow-globe-skate-night": {
+    affirmation: [
+      "I can find my balance after a wobble.",
+      "I can hold a friend’s hand while I learn to skate.",
+      "I get to practice at my own speed.",
+      "One small glide counts when I’m trying something new.",
+    ],
+    nightAffirmation: [
+      "I can be proud of getting up after a slip.",
+      "My feet deserve a rest after all that practice.",
+      "I can imagine the snow settling gently inside my globe.",
+      "I can save my next turn on the ice for tomorrow.",
+    ],
+  },
+  "north-pole-toy-shop": {
+    affirmation: [
+      "I can turn a box into a toy nobody has seen before.",
+      "I can ask someone to show me how the pieces fit.",
+      "I’m good at finding new ways to play.",
+      "I can try a different piece when the first one sticks.",
+    ],
+    nightAffirmation: [
+      "I can put my tools away with my idea only halfway done.",
+      "Even my silliest invention started with a good question.",
+      "My ideas are worth saving on a scrap of paper.",
+      "I can dream up a toy and build it another day.",
+    ],
+  },
+  "christmas-eve-delivery": {
+    affirmation: [
+      "I can leave a little surprise for someone I love.",
+      "I can share the work when there’s a whole sleigh to pack.",
+      "My helping hands can make a big job smaller.",
+      "I can think about what would make someone else smile.",
+    ],
+    nightAffirmation: [
+      "I can feel good about a kindness nobody saw.",
+      "I deserve a cozy landing after a busy day.",
+      "I can set down what I’ve been carrying today.",
+      "I can picture a sleigh crossing the stars as I fall asleep.",
+    ],
+  },
+  "beaded-trees": {
+    affirmation: [
+      "I can make my own pattern, bead by bead.",
+      "I can start with one small piece when a job looks big.",
+      "I get to change my pattern if I have a new idea.",
+      "A dropped bead is just a chance to try again.",
+    ],
+    nightAffirmation: [
+      "I can remember the little parts of today that went well.",
+      "I can leave a space for the next bead tomorrow.",
+      "Every bit of practice I did today counts.",
+      "I can picture my favorite colors strung together as I rest.",
+    ],
+  },
+  "raspberry-window": {
+    affirmation: [
+      "I can look out my window and find one tiny wonder.",
+      "I notice little things, like rabbit tracks in the snow.",
+      "I can take my time learning to tie a bow.",
+      "I can watch quietly when a small animal comes close.",
+    ],
+    nightAffirmation: [
+      "I can curl up in a warm spot and let the snow fall.",
+      "I can keep a little wonder from today in my mind.",
+      "I can rest my eyes after a day of looking for surprises.",
+      "I can imagine what the rabbit does after the window goes dark.",
+    ],
+  },
+  "ruby-winter": {
+    affirmation: [
+      "My voice belongs in the morning chorus, too.",
+      "I can wear a bright color just because I love it.",
+      "When I slow down, I notice things like a cardinal in the snow.",
+      "I get to try my wings at my own pace.",
+    ],
+    nightAffirmation: [
+      "I can find a quiet perch after a noisy day.",
+      "My voice matters even when I speak softly.",
+      "I can let my shoulders settle like a bird folding its wings.",
+      "I can save my song for the morning.",
+    ],
+  },
+  "fairy-light-forest": {
+    affirmation: [
+      "One little light is enough to help me take my next step.",
+      "I can be curious about what’s around the bend.",
+      "I can choose a walking buddy for a new trail.",
+      "I’m allowed to stop along the path and look up.",
+    ],
+    nightAffirmation: [
+      "I can imagine a light in the cottage window waiting for me.",
+      "I explored enough for today. My boots can rest by the door.",
+      "I can remember the part of today that lit me up.",
+      "I can let my breathing slow as the forest grows quiet.",
+    ],
+  },
+};
+
 const MORNING_AFFIRMATIONS = [
   "I am brave and I can try new things.",
   "Today is going to be a good day.",
@@ -3724,7 +3909,7 @@ const marginMessages = {
 
 function applyTheme(theme, { save = true } = {}) {
   const next = theme || "rainbow";
-  const changed = document.body.dataset.theme !== next;
+  const previous = document.body.dataset.theme;
   if (save) themeSelections.set(themeStorageKey(), next);
   document.body.dataset.theme = next;
   updateSceneReveal();
@@ -3742,7 +3927,12 @@ function applyTheme(theme, { save = true } = {}) {
     btn.classList.toggle("isActive", btn.dataset.theme === next);
   });
   updateMoonPhaseUI();
-  Object.values(scratchTickets).forEach((ticket) => ticket.themeChanged(changed));
+  if (previous && previous !== next && (decemberThemes.has(next) || decemberThemes.has(previous))) {
+    const entries = loadAllEntries();
+    restoreScratchTickets(entries, getEntry(entries, toISODate(selectedDate)));
+  } else {
+    Object.values(scratchTickets).forEach((ticket) => ticket.themeChanged());
+  }
   requestAnimationFrame(syncFlipMinHeight);
 }
 
@@ -3953,7 +4143,7 @@ function toggleWeatherCard() {
 }
 
 const themeSelections = new Map();
-const decemberThemes = new Set(["christines-gingerbread-house", "santa-and-rudolph", "christmas-morning", "snowman-wave", "pastel-village-trees", "rainbow-pond", "snow-globe-skate-night", "north-pole-toy-shop", "christmas-eve-delivery", "beaded-trees", "raspberry-window", "ruby-winter", "fairy-light-forest"]);
+const decemberThemes = new Set(Object.keys(DECEMBER_AFFIRMATIONS));
 
 function themeStorageKey() {
   return viewMonthIndex === 11 ? "cj.decemberTheme.v1" : THEME_STORAGE_KEY;
@@ -4419,8 +4609,7 @@ function loadEntryIntoForm() {
   els.weeklyGoal.value = entry.night.weeklyGoal || "";
   els.madeTodayBetter.value = entry.night.madeTodayBetter || "";
 
-  scratchTickets.morning.reset(entry.affirmation);
-  scratchTickets.night.reset(entry.nightAffirmation);
+  restoreScratchTickets(entries, entry);
   requestAnimationFrame(syncFlipMinHeight);
 }
 
@@ -4454,6 +4643,28 @@ function awardStarIfEligible(entries, iso) {
     return true;
   }
   return false;
+}
+
+function restoreScratchTickets(entries, entry) {
+  const theme = document.body.dataset.theme;
+  let saved = entry;
+  if (decemberThemes.has(theme)) {
+    // Older entries had one pair of affirmations and no record of the theme.
+    // Keep that pair with the first December theme opened for this date.
+    if (!entry.decemberAffirmations && (entry.affirmation || entry.nightAffirmation)) {
+      entry.decemberAffirmations = {
+        [theme]: { affirmation: entry.affirmation, nightAffirmation: entry.nightAffirmation }
+      };
+      try {
+        saveAllEntries(entries);
+      } catch {
+        // The original saved words remain available if local storage is full.
+      }
+    }
+    saved = entry.decemberAffirmations?.[theme] || {};
+  }
+  scratchTickets.morning.reset(saved.affirmation);
+  scratchTickets.night.reset(saved.nightAffirmation);
 }
 
 function saveMorning() {
@@ -4567,8 +4778,9 @@ function createScratchTicket(canvas, text, button, field, choices) {
   }
 
   function pick() {
-    const available = choices.filter(choice => choice !== message);
-    const pool = available.length ? available : choices;
+    const themeChoices = DECEMBER_AFFIRMATIONS[document.body.dataset.theme]?.[field] || choices;
+    const available = themeChoices.filter(choice => choice !== message);
+    const pool = available.length ? available : themeChoices;
     return pool[Math.floor(Math.random() * pool.length)];
   }
 
@@ -4645,7 +4857,14 @@ function createScratchTicket(canvas, text, button, field, choices) {
     updateLabels();
     const entries = loadAllEntries();
     const entry = getEntry(entries, toISODate(selectedDate));
-    entry[field] = message;
+    const theme = document.body.dataset.theme;
+    if (decemberThemes.has(theme)) {
+      const themes = entry.decemberAffirmations ||= {};
+      const saved = themes[theme] ||= {};
+      saved[field] = message;
+    } else {
+      entry[field] = message;
+    }
     entry.updatedAt = Date.now();
     try {
       saveAllEntries(entries);
@@ -4722,11 +4941,7 @@ function createScratchTicket(canvas, text, button, field, choices) {
   return {
     reveal,
     reset,
-    themeChanged(changed) {
-      if (changed && message && decemberThemes.has(document.body.dataset.theme)) {
-        reset(message);
-        return;
-      }
+    themeChanged() {
       if (typingTimer !== null) {
         stopTyping();
         text.textContent = `“${message}”`;
