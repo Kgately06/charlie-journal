@@ -364,7 +364,7 @@ function applyTheme(theme) {
     note.textContent = notes[index];
   });
   try {
-    localStorage.setItem(THEME_STORAGE_KEY, next);
+    if (next !== "forest") localStorage.setItem(THEME_STORAGE_KEY, next);
   } catch {
     // ignore
   }
@@ -589,6 +589,35 @@ function initTheme() {
     if (stored) theme = stored;
   } catch {
     // ignore
+  }
+  if (holidayDate(new Date())) {
+    const style = document.createElement("style");
+    style.textContent = `body[data-theme="forest"] {
+  --paper: #fff8e7;
+  --ink: #203b30;
+  --accent: #326648;
+  --accent2: #e1b964;
+  --binder: #a67a3d;
+  background-color: #244d42;
+  background-image:
+    radial-gradient(circle at 17px 29px, #fff9d4 1px, #e9b75c99 2px, transparent 6px),
+    radial-gradient(circle at 58px 81px, #ffeabb 1px, #f1bb5e55 3px, transparent 9px),
+    linear-gradient(120deg, #244d42, #668574 55%, #264b40);
+  background-size: 127px 113px, 173px 149px, cover;
+}
+body[data-theme="forest"] .themeBtn.isActive {
+  background: #244d42;
+  color: #fff8e7;
+  border-color: #dbb66e;
+}`;
+    document.head.append(style);
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "themeBtn";
+    button.dataset.theme = "forest";
+    button.textContent = "✦ Fairy Light Forest";
+    document.querySelector(".themeButtons").append(button);
+    theme = "forest";
   }
   applyTheme(theme);
 }
@@ -1070,6 +1099,36 @@ function renderCalendar() {
   }
 }
 
+function holidayDate(date) {
+  return date.getFullYear() === 2026 && date.getMonth() === 11 && date.getDate() === 1;
+}
+
+function renderChristmasQuestion(morning) {
+  document.getElementById("christmasAnswer")?.closest("label").remove();
+  
+  if (!holidayDate(selectedDate) && !morning.christmasQuestion) return;
+  const questions = [
+    "What’s your favorite part of Christmas?",
+    "If you followed a trail of fairy lights, what would you find at the end?",
+    "What would you hang on a Christmas tree for woodland animals?",
+    "What Christmas song would you teach a forest full of owls?",
+    "Who could you surprise with a little kindness today?",
+    "If you could invent a Christmas tradition, what would everyone do?",
+    "Which holiday moment would you tuck into an ornament to keep forever?"
+  ];
+  const field = document.createElement("label");
+  field.className = "field";
+  const title = document.createElement("span");
+  title.className = "labelText";
+  title.textContent = morning.christmasQuestion || questions[(selectedDate.getDate() - 1) % questions.length];
+  const answer = document.createElement("textarea");
+  answer.id = "christmasAnswer";
+  answer.rows = 3;
+  answer.value = morning.christmasAnswer || "";
+  field.append(title, answer);
+  els.needToDoToday.closest(".fieldGrid").append(field);
+}
+
 function renderReadingPrompt(entries, morning) {
   const grid = els.needToDoToday.closest(".fieldGrid");
   grid.querySelector("#readingAnswer")?.closest("label").remove();
@@ -1097,6 +1156,7 @@ function loadEntryIntoForm() {
   const entry = getEntry(entries, toISODate(selectedDate));
 
   renderReadingPrompt(entries, entry.morning);
+  renderChristmasQuestion(entry.morning);
   els.goalsToday.value = entry.morning.goalsToday || "";
   els.lookingForwardTo.value = entry.morning.lookingForwardTo || "";
   els.needToDoToday.value = entry.morning.needToDoToday || "";
@@ -1172,6 +1232,11 @@ function saveMorning() {
   const iso = toISODate(selectedDate);
   const entry = getEntry(entries, iso);
 
+  const christmas = document.getElementById("christmasAnswer");
+  if (christmas) {
+    entry.morning.christmasQuestion = christmas.previousElementSibling.textContent;
+    entry.morning.christmasAnswer = christmas.value;
+  }
   const reading = document.getElementById("readingAnswer");
   if (reading) entry.morning[selectedDate.getDay() === 0 ? "readingTitle" : "readingProgress"] = reading.value;
   entry.morning.goalsToday = els.goalsToday.value;
